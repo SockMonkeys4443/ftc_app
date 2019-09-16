@@ -81,6 +81,9 @@ public class driveTrainTest extends LinearOpMode {
 
             //sets the turn power
             turnPower = (gamepad1.right_stick_x);
+            telemetry.addData("turnPower", turnPower);
+
+            telemetry.update();
 
         }
         //i lost the game
@@ -93,18 +96,20 @@ public class driveTrainTest extends LinearOpMode {
         } else {
             swingTurn = false;
         }
+        telemetry.addData("swing turn",swingTurn);
 
     }
 
     private void slowUpdate() {
         //slows down the robot based on how much the right bumper is pressed
-        if(gamepad1.right_trigger > 0.8) {
-            slowRate = 0.5f;
-        } else if (gamepad1.right_trigger > 0.01) {
-            slowRate = 0.75f;
+        if(gamepad1.right_trigger > 0.8f) {
+            slowRate = 0.25f;
+        } else if (gamepad1.right_trigger > 0.01f) {
+            slowRate = 0.6f;
         } else {
             slowRate = 1;
         }
+        telemetry.addData("slow rate", slowRate);
     }
 
     private void driveUpdate() {
@@ -114,15 +119,15 @@ public class driveTrainTest extends LinearOpMode {
             if (gamepad1.right_stick_x < 0) {
                 leftMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
             } else if (gamepad1.right_stick_x > 0) {
-                rightMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
+                rightMotor.setPower(((gamepad1.left_stick_y) + turnPower) * slowRate);
             } else {
                 leftMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
-                rightMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
+                rightMotor.setPower(((gamepad1.left_stick_y) + turnPower) * slowRate);
             }
         } else {
             //normal driving
             leftMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
-            rightMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
+            rightMotor.setPower(((gamepad1.left_stick_y) + turnPower) * slowRate);
         }
 
     }
