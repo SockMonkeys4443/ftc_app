@@ -52,6 +52,7 @@ public class driveTrainTest extends LinearOpMode {
 
     float slowRate = 1;
     float turnPower;
+    boolean lockSlow = false;
     boolean swingTurn = false;
 
 
@@ -87,6 +88,12 @@ public class driveTrainTest extends LinearOpMode {
 
         }
         //i lost the game
+        //whos the game
+        //its joe
+        //whats that
+        //ligma
+        //tyler blevins?
+        //joe mama ligma ballz
     }
 
     private void turnUpdate() {
@@ -102,28 +109,23 @@ public class driveTrainTest extends LinearOpMode {
 
     private void slowUpdate() {
         //slows down the robot based on how much the right bumper is pressed
-        if(gamepad1.right_trigger > 0.8f) {
-            slowRate = 0.25f;
-        } else if (gamepad1.right_trigger > 0.01f) {
-            slowRate = 0.6f;
-        } else {
-            slowRate = 1;
+        if (gamepad1.right_bumper) {
+            lockSlow = !lockSlow;
         }
-        telemetry.addData("slow rate", slowRate);
+        if (lockSlow) {
+            slowRate = 0.3f;
+        } else {
+            slowRate = (gamepad1.right_trigger * -0.8f) + 1;
+            telemetry.addData("slow rate", slowRate);
+        }
     }
 
     private void driveUpdate() {
-
-        if (swingTurn) {
             //changes to swing turn
-            if (gamepad1.right_stick_x < 0) {
-                leftMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
-            } else if (gamepad1.right_stick_x > 0) {
-                rightMotor.setPower(((gamepad1.left_stick_y) + turnPower) * slowRate);
-            } else {
-                leftMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
-                rightMotor.setPower(((gamepad1.left_stick_y) + turnPower) * slowRate);
-            }
+        if (gamepad1.right_stick_x < 0 && swingTurn) {
+            leftMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
+        } else if (gamepad1.right_stick_x > 0 && swingTurn) {
+            rightMotor.setPower(((gamepad1.left_stick_y) + turnPower) * slowRate);
         } else {
             //normal driving
             leftMotor.setPower(((gamepad1.left_stick_y) - turnPower) * slowRate);
