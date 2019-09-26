@@ -39,7 +39,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-//import com.qualcomm.hardware.rev.*;
 
 
 @TeleOp(name="Drive Train Test", group="Linear Opmode")
