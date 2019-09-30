@@ -19,13 +19,21 @@ public class DarkTest extends SuperDark {
 
     @Override
     public void darkRunning() {
-        drive.strafeLeft(0.2);
-        sleep(500);
-        drive.goForwards(0.2);
-        sleep(500);
-        drive.turnLeft(0.2);
-        sleep(500);
+        drive.strafeLeft(0.33);
+        sleep(2000);
+        drive.strafeRight(0.33);
+        sleep(2000);
+        drive.goForwards(0.33);
+        sleep(2000);
+        drive.goBackwards(0.33);
+        sleep(2000);
+        drive.turnLeft(0.33);
+        sleep(2000);
+        drive.turnRight(0.33);
+        sleep(2000);
         drive.stopAll();
+
+
         stop();
     }
 }

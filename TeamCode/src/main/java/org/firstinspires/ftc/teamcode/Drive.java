@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -21,6 +22,11 @@ public class Drive {
         frontRight = hwMap.get(DcMotor.class,"frontRight");
         backLeft = hwMap.get(DcMotor.class,"backLeft");
         backRight = hwMap.get(DcMotor.class,"backRight");
+
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     //Sets all motors to Zero power
@@ -46,26 +52,26 @@ public class Drive {
     void goForwards(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(power);
-        backLeft.setPower(-power);
-        backRight.setPower(-power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
     }
     void goBackwards(double power) {
         frontLeft.setPower(-power);
         frontRight.setPower(-power);
-        backLeft.setPower(power);
-        backRight.setPower(power);
+        backLeft.setPower(-power);
+        backRight.setPower(-power);
     }
     void turnLeft(double power) {
         frontLeft.setPower(-power);
-        frontRight.setPower(-power);
-        backLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(-power);
         backRight.setPower(power);
     }
     void turnRight(double power) {
-        frontLeft.setPower(-power);
+        frontLeft.setPower(power);
         frontRight.setPower(-power);
         backLeft.setPower(power);
-        backRight.setPower(power);
+        backRight.setPower(-power);
     }
 
 
