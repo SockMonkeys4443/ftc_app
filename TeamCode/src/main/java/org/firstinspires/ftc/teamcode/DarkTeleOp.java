@@ -13,7 +13,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class DarkTeleOp extends SuperDark {
 
 
-    enum DriveMode {NORMAL, WEIRD}
+    enum DriveMode {NORMAL, WEIRD, SLOW, SLOWADJUST}
+
 
     DriveMode driveMode = DriveMode.NORMAL;
 
@@ -25,11 +26,17 @@ public class DarkTeleOp extends SuperDark {
     @Override
     public void darkRunning() {
 
-        if (driveMode==driveMode.NORMAL) {
+        if (driveMode==DriveMode.NORMAL) {
             driveNormal(1);
         }
-        else if (driveMode==driveMode.WEIRD) {
+        else if (driveMode==DriveMode.WEIRD) {
             driveWeird(1);
+        }
+        else if (driveMode==DriveMode.SLOW) {
+            driveNormal(0.33);
+        }
+        else if (driveMode==DriveMode.SLOWADJUST) {
+            driveNormal(gamepad1.right_trigger);
         }
         else {
             driveNormal(1);
@@ -83,16 +90,17 @@ public class DarkTeleOp extends SuperDark {
     }
 
     void toggleDrive() {
-        if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.WEIRD;}
-        else if (driveMode==DriveMode.WEIRD) {driveMode=DriveMode.NORMAL;}
+        if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.SLOW;}
+        else if (driveMode==DriveMode.SLOW) {driveMode=DriveMode.SLOWADJUST;}
+        else {driveMode=DriveMode.NORMAL;}
     }
 
     void driveNormal(double power) {
 
-        double frontPower = -gamepad1.left_stick_y;
-        double sidePower = gamepad1.left_stick_x;
+        double frontPower = -gamepad1.left_stick_y*power;
+        double sidePower = gamepad1.left_stick_x*power;
 
-        double turnPower = gamepad1.right_stick_x;
+        double turnPower = gamepad1.right_stick_x*power;
 
         drive.frontLeft.setPower((frontPower +sidePower) +turnPower);
         drive.frontRight.setPower((frontPower-sidePower) -turnPower);
