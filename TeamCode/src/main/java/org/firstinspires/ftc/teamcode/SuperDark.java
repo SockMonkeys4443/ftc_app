@@ -10,16 +10,28 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public abstract class SuperDark extends LinearOpMode {
     Drive drive = new Drive();
+    IMUController imuController = new IMUController();
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry.addData("Status", "Initializing Dark Meronde...");
+        telemetry.update();
         drive.init(hardwareMap);
+        imuController.init(hardwareMap, telemetry);
+        while(!imuController.imu.isGyroCalibrated() && !isStopRequested()) {
+            sleep(50);
+            idle();
+        }
+        telemetry.addData("IMU calib status", imuController.imu.getCalibrationStatus().toString());
 
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Initializing OpMode...");
+        telemetry.update();
+        darkInit();
+
+        telemetry.addData("Status", "Initialization Complete!");
         telemetry.update();
 
-        darkInit();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
