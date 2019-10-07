@@ -126,5 +126,9 @@ public class DarkTeleOp extends SuperDark {
         drive.backRight.setPower((frontPower+sidePower) -turnPower);
 
     }
-}
 
+    void correctedDrive(double power) {
+
+    }
+
+}
