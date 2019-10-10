@@ -33,7 +33,7 @@ public class DarkTeleOp extends SuperDark {
             driveWeird(1);
         }
         else if (driveMode==DriveMode.SLOW) {
-            driveNormal(0.33);
+            driveNormal(0.3);
         }
         else if (driveMode==DriveMode.SLOWADJUST) {
             driveNormal(gamepad1.right_trigger);
@@ -47,6 +47,10 @@ public class DarkTeleOp extends SuperDark {
         if (yPressed()) {
             toggleDrive();
         }
+
+        arm.setPower(gamepad2.left_stick_y);
+
+        telemetry.addData("Heading",imuController.heading);
 
     }
 

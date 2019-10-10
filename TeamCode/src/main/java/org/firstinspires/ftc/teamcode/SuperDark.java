@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public abstract class SuperDark extends LinearOpMode {
     Drive drive = new Drive();
+    OldArm arm = new OldArm();
+
     IMUController imuController = new IMUController();
     private ElapsedTime runtime = new ElapsedTime();
         //I lost the game - anderson
@@ -17,7 +19,10 @@ public abstract class SuperDark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initializing Dark Meronde...");
         telemetry.update();
+
         drive.init(hardwareMap);
+        arm.init(hardwareMap);
+
         imuController.init(hardwareMap, telemetry);
         while(!imuController.imu.isGyroCalibrated() && !isStopRequested()) {
             sleep(50);
