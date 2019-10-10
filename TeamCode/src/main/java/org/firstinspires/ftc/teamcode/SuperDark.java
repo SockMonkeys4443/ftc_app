@@ -12,7 +12,7 @@ public abstract class SuperDark extends LinearOpMode {
     Drive drive = new Drive();
     IMUController imuController = new IMUController();
     private ElapsedTime runtime = new ElapsedTime();
-
+        //I lost the game - anderson
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initializing Dark Meronde...");
