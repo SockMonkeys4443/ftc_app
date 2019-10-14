@@ -48,8 +48,12 @@ public class DarkTeleOp extends SuperDark {
             toggleDrive();
         }
 
-        arm.setPower(gamepad2.left_stick_y);
-        OldArm.openClaw(gamepad2.right_trigger);
+        if(xPressed()) {
+            toggleServo();
+        }
+
+        arm.armPower(gamepad2.right_stick_y);
+        arm.clawPower(gamepad2.right_stick_x); //TODO: Change to trigger
 
         telemetry.addData("Heading",imuController.heading);
 
@@ -99,6 +103,10 @@ public class DarkTeleOp extends SuperDark {
         else if (driveMode==DriveMode.SLOW) {driveMode=DriveMode.SLOWADJUST;}
         else {driveMode=DriveMode.NORMAL;}
     }
+    void toggleServo() {
+        if (foundServo.getPosition()==0) {foundServo.setPosition(180);}
+        else {foundServo.setPosition(0);}
+    }
 
     void driveNormal(double power) {
 
@@ -135,10 +143,5 @@ public class DarkTeleOp extends SuperDark {
     void correctedDrive(double power) {
 
     }
-
-
-
-
-
 
 }

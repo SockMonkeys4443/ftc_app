@@ -13,12 +13,18 @@ public class OldArm {
 
     }
 
-    void setPower(float power) {
+    void armPower(float power) {
         armMotor.setPower(power);
     }
+    void clawPower(float power) {clawMotor.setPower(power);}
 
-    void openClaw(float power) {
-        clawMotor.setPower(power);
+    void setClaw(boolean opened) {
+        //clawMotor.setPower(power);
+        //TODO: set to open or closed
+        //TODO: use encoders!!!
+    }
+    void toggleClaw() {
+        //TODO: make this a toggle using the above method
     }
 
 

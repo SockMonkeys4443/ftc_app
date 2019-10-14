@@ -6,11 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public abstract class SuperDark extends LinearOpMode {
     Drive drive = new Drive();
     OldArm arm = new OldArm();
+    Servo foundServo;
 
     IMUController imuController = new IMUController();
     private ElapsedTime runtime = new ElapsedTime();
@@ -22,6 +24,7 @@ public abstract class SuperDark extends LinearOpMode {
 
         drive.init(hardwareMap);
         arm.init(hardwareMap);
+        foundServo=hardwareMap.get(Servo.class,"foundServo");
 
         imuController.init(hardwareMap, telemetry);
         while(!imuController.imu.isGyroCalibrated() && !isStopRequested()) {
