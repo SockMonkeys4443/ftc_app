@@ -17,6 +17,12 @@ public class OldArm {
         armMotor.setPower(power);
     }
 
+    void openClaw(float power) {
+        clawMotor.setPower(power);
+    }
+
+
+
     void stop() {
         armMotor.setPower(0);
     }
