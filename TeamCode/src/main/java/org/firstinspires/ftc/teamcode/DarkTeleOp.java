@@ -49,6 +49,7 @@ public class DarkTeleOp extends SuperDark {
         }
 
         arm.setPower(gamepad2.left_stick_y);
+        OldArm.openClaw(gamepad2.right_trigger);
 
         telemetry.addData("Heading",imuController.heading);
 
@@ -134,6 +135,10 @@ public class DarkTeleOp extends SuperDark {
     void correctedDrive(double power) {
 
     }
+
+
+
+
 
 
 }
