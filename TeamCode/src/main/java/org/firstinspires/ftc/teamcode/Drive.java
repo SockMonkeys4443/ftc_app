@@ -70,11 +70,28 @@ public class Drive {
         backLeft.setPower(-power);
         backRight.setPower(power);
     }
-    void turn() {
-        imuController.getAngle();
+
+    //needs better names
+    enum angleMode {target, add}
+
+    void turn(angleMode mode, float angle, double power) {
+        if (mode == angleMode.target) {
+
+        } else if (mode == angleMode.add) {
+            float targetAngle = imuController.getAngle() + angle;
+            if (targetAngle - imuController.getAngle() > 0) {
+                while (targetAngle > imuController.getAngle()) {
+                    turnLeft(power);
+                }
+            } else if (targetAngle - imuController.getAngle() < 0) {
+                while (targetAngle < imuController.getAngle()) {
+                    turnRight(power);
+                }
+            }
+        }
     }
 
-    void turnRight(double power) {
+   void turnRight(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(-power);
         backLeft.setPower(power);
