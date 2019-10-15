@@ -10,6 +10,8 @@ public class OldArm {
     void init(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         clawMotor = hardwareMap.get(DcMotor.class, "clawMotor");
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        clawMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 

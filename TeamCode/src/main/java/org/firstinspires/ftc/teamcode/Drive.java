@@ -12,12 +12,14 @@ public class Drive {
     DcMotor backLeft = null;
     DcMotor backRight = null;
 
+
+    IMUController imuController;
     //double frontLeftPower;
     //double frontRightPower;
     //double backLeftPower;
     //double backRightPower;
 
-    void init(HardwareMap hwMap) {
+    void init(HardwareMap hwMap, IMUController imuController) {
         frontLeft = hwMap.get(DcMotor.class,"frontLeft");
         frontRight = hwMap.get(DcMotor.class,"frontRight");
         backLeft = hwMap.get(DcMotor.class,"backLeft");
@@ -27,6 +29,7 @@ public class Drive {
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        this.imuController = imuController;
     }
 
     //Sets all motors to Zero power
@@ -67,6 +70,10 @@ public class Drive {
         backLeft.setPower(-power);
         backRight.setPower(power);
     }
+    void turn() {
+        imuController.getAngle();
+    }
+
     void turnRight(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(-power);

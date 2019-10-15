@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class IMUController {
     public BNO055IMU imu;
     public Orientation angles = new Orientation();
-    public float heading;
+    private float lastHeading;
     BNO055IMU.Parameters parameters;
 
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -32,8 +32,8 @@ public class IMUController {
 
     public float getAngle() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        heading = AngleUnit.DEGREES.normalize(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
-        return heading;
+        lastHeading = AngleUnit.DEGREES.normalize(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+        return lastHeading;
     }
 
     /*

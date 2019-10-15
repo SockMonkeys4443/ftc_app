@@ -55,7 +55,8 @@ public class DarkTeleOp extends SuperDark {
         arm.armPower(gamepad2.right_stick_y);
         arm.clawPower(gamepad2.right_stick_x); //TODO: Change to trigger
 
-        telemetry.addData("Heading",imuController.heading);
+        telemetry.addData("Heading",imuController.getAngle());
+        telemetry.update();
 
     }
 

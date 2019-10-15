@@ -22,7 +22,7 @@ public abstract class SuperDark extends LinearOpMode {
         telemetry.addData("Status", "Initializing Dark Meronde...");
         telemetry.update();
 
-        drive.init(hardwareMap);
+        drive.init(hardwareMap, imuController);
         arm.init(hardwareMap);
         foundServo=hardwareMap.get(Servo.class,"foundServo");
 
