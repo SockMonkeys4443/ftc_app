@@ -36,7 +36,7 @@ public class DarkTeleOp extends SuperDark {
             driveNormal(0.3);
         }
         else if (driveMode==DriveMode.SLOWADJUST) {
-            driveNormal(gamepad1.right_trigger);
+            driveNormal(-gamepad1.right_trigger);
         }
         else {
             driveNormal(1);
