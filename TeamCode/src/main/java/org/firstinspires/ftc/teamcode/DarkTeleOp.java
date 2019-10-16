@@ -14,9 +14,11 @@ public class DarkTeleOp extends SuperDark {
 
 
     enum DriveMode {NORMAL, WEIRD, SLOW, SLOWADJUST}
+    enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
 
     DriveMode driveMode = DriveMode.NORMAL;
+    PositionMode positionMode = PositionMode.NORMAL;
 
     @Override
     public void darkInit() {
@@ -48,15 +50,22 @@ public class DarkTeleOp extends SuperDark {
             toggleDrive();
         }
 
-        if(xPressed()) {
+        if(bPressed()) {
             toggleServo();
         }
 
-        arm.armPower(gamepad2.right_stick_y);
-        arm.clawPower(gamepad2.right_stick_x); //TODO: Change to trigger
+        if(xPressed()) {
+            togglePosition();
+        }
 
-        telemetry.addData("Heading",imuController.getAngle());
+        arm.armPower(gamepad2.right_stick_y);
+
+        telemetry.addData("Heading",imuController.getAngle()+" "+imuController.getAngle360());
+        //telemetry.addData("HeadingA:",imuController.getAngle360());
         telemetry.update();
+
+        if(gamepad2.left_trigger!=0) {arm.clawPower(gamepad2.left_trigger);} else if (gamepad2.right_trigger!=0) {
+            arm.clawPower(-gamepad2.right_trigger); } else {arm.clawPower(0);}
 
         imuController.updatePosition();
 
@@ -103,12 +112,17 @@ public class DarkTeleOp extends SuperDark {
 
     void toggleDrive() {
         if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.SLOW;}
-        else if (driveMode==DriveMode.SLOW) {driveMode=DriveMode.SLOWADJUST;}
+        //else if (driveMode==DriveMode.SLOW) {driveMode=DriveMode.SLOWADJUST;}
         else {driveMode=DriveMode.NORMAL;}
     }
     void toggleServo() {
         if (foundServo.getPosition()==0) {foundServo.setPosition(180);}
         else {foundServo.setPosition(0);}
+    }
+    void togglePosition() {
+        if (positionMode==PositionMode.NORMAL) {positionMode=PositionMode.TESTONE; imuController.stopTracking(); imuController.startTracking();}
+        else if (positionMode==PositionMode.TESTONE) {positionMode=PositionMode.TESTTWO; imuController.stopTracking(); imuController.startTracking2();}
+        else {positionMode=PositionMode.NORMAL; imuController.stopTracking();}
     }
 
     void driveNormal(double power) {
