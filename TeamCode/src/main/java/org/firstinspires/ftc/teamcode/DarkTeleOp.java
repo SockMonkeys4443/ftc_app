@@ -58,6 +58,8 @@ public class DarkTeleOp extends SuperDark {
         telemetry.addData("Heading",imuController.getAngle());
         telemetry.update();
 
+        imuController.updatePosition();
+
     }
 
 
