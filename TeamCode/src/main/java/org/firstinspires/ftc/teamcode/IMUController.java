@@ -48,10 +48,7 @@ public class IMUController {
     }
 
     public void startTracking2() {
-        imu.startAccelerationIntegration(position, velocity, 1000);
-    }
-    public void startTracking() {
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        imu.startAccelerationIntegration(position, velocity, 300);
     }
     public void stopTracking() {
         imu.stopAccelerationIntegration();
@@ -61,6 +58,9 @@ public class IMUController {
         return angle;
     }
 
+    public void startTracking() {
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 300);
+    }
     public Position updatePosition()
     {
         Position newPosition = imu.getPosition();
