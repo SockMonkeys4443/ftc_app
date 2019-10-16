@@ -9,6 +9,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import java.math.RoundingMode;
+
 public class IMUController {
     public BNO055IMU imu;
     public Orientation angles = new Orientation();
@@ -36,8 +38,16 @@ public class IMUController {
         return lastHeading;
     }
 
+    public float getAngle360() {
+        float angle = getAngle() - ((float)java.lang.Math.floor(getAngle() / 360) * 360);
+        return angle;
+    }
 
+    /*
+    public float angleDistance(float target) {
+        float test = target + 360;
 
+    }
     /*
     public void resetAngle() {
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
