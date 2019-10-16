@@ -13,7 +13,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class DarkTeleOp extends SuperDark {
 
 
-    enum DriveMode {NORMAL, WEIRD, SLOW, SLOWADJUST}
+    enum DriveMode {NORMAL, DIAGONAL, ADJUSTED}
+    double drivePower;
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
 
@@ -29,19 +30,16 @@ public class DarkTeleOp extends SuperDark {
     public void darkRunning() {
 
         if (driveMode==DriveMode.NORMAL) {
-            driveNormal(1);
+            driveNormal(drivePower);
         }
-        else if (driveMode==DriveMode.WEIRD) {
-            driveWeird(1);
+        else if (driveMode==DriveMode.DIAGONAL) {
+            driveDiagonal(drivePower);
         }
-        else if (driveMode==DriveMode.SLOW) {
-            driveNormal(0.3);
-        }
-        else if (driveMode==DriveMode.SLOWADJUST) {
-            driveNormal(-gamepad1.right_trigger);
+        else if (driveMode==DriveMode.ADJUSTED) {
+            //driveCorrected(drivePower);
         }
         else {
-            driveNormal(1);
+            driveNormal(drivePower);
         }
 
         buttonUpdate();
@@ -56,6 +54,9 @@ public class DarkTeleOp extends SuperDark {
 
         if(xPressed()) {
             togglePosition();
+        }
+        if(aPressed()) {
+            toggleSpeed();
         }
 
         arm.armPower(gamepad2.right_stick_y);
@@ -111,8 +112,8 @@ public class DarkTeleOp extends SuperDark {
     }
 
     void toggleDrive() {
-        if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.SLOW;}
-        //else if (driveMode==DriveMode.SLOW) {driveMode=DriveMode.SLOWADJUST;}
+        if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.DIAGONAL;}
+        else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
         else {driveMode=DriveMode.NORMAL;}
     }
     void toggleServo() {
@@ -123,6 +124,10 @@ public class DarkTeleOp extends SuperDark {
         if (positionMode==PositionMode.NORMAL) {positionMode=PositionMode.TESTONE; imuController.stopTracking(); imuController.startTracking();}
         else if (positionMode==PositionMode.TESTONE) {positionMode=PositionMode.TESTTWO; imuController.stopTracking(); imuController.startTracking2();}
         else {positionMode=PositionMode.NORMAL; imuController.stopTracking();}
+    }
+    void toggleSpeed() {
+        if (drivePower==1) {drivePower=0.3;}
+        else {drivePower=1;}
     }
 
     void driveNormal(double power) {
@@ -136,6 +141,32 @@ public class DarkTeleOp extends SuperDark {
         drive.frontRight.setPower((frontPower-sidePower) -turnPower);
         drive.backLeft.setPower((frontPower-sidePower) +turnPower);
         drive.backRight.setPower((frontPower+sidePower) -turnPower);
+
+    }
+
+
+    void driveDiagonal(double power) {
+        double frontPower = -gamepad1.left_stick_y*power;
+        double sidePower = gamepad1.left_stick_x*power;
+
+        double turnPower = gamepad1.right_stick_x*power;
+
+        /*
+        drive.frontLeft.setPower((frontPower +sidePower) +turnPower);
+        drive.frontRight.setPower((frontPower-sidePower) -turnPower);
+        drive.backLeft.setPower((frontPower-sidePower) +turnPower);
+        drive.backRight.setPower((frontPower+sidePower) -turnPower);
+        */
+        //frontLeft forward
+        //backRight forward
+
+        drive.frontLeft.setPower(frontPower+turnPower);
+        drive.backRight.setPower(frontPower-turnPower);
+        drive.frontRight.setPower(-sidePower-turnPower);
+        drive.backLeft.setPower(-sidePower+turnPower);
+
+
+
 
     }
 
@@ -157,7 +188,7 @@ public class DarkTeleOp extends SuperDark {
 
     }
 
-    void correctedDrive(double power) {
+    void driveCorrected(double power) {
 
     }
 
