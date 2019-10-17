@@ -41,21 +41,41 @@ public class IMUController {
         telemetry.update();
     }
 
+    //Angles
+
     public float getAngle() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         lastHeading = AngleUnit.DEGREES.normalize(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
         return lastHeading;
     }
 
+    public float getAngle360() {
+        float angle = getAngle() - ((float)java.lang.Math.floor(getAngle() / 360) * 360);
+        return angle;
+    }
+
+    //will be true if robot needs to turn right
+    public float testDirection(float target) {
+        float angle;
+
+        if (target - getAngle360() < 180) {
+            angle = target - getAngle360();
+        } else {
+            angle = target - getAngle360() - 360;
+        }
+
+        return angle;
+
+    }
+
+
+    //Tracking
+
     public void startTracking2() {
         imu.startAccelerationIntegration(position, velocity, 300);
     }
     public void stopTracking() {
         imu.stopAccelerationIntegration();
-    }
-    public float getAngle360() {
-        float angle = getAngle() - ((float)java.lang.Math.floor(getAngle() / 360) * 360);
-        return angle;
     }
 
     public void startTracking() {
@@ -70,11 +90,7 @@ public class IMUController {
 
         return newPosition;
     }
-    /*
-    public float angleDistance(float target) {
-        float test = target + 360;
 
-    }
     /*
     public void resetAngle() {
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);

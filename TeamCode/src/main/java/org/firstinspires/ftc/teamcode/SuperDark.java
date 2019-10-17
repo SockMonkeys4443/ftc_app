@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -12,6 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public abstract class SuperDark extends LinearOpMode {
     Drive drive = new Drive();
     OldArm arm = new OldArm();
+    DistanceControl distance = new DistanceControl();
     Servo foundServo;
 
     IMUController imuController = new IMUController();
@@ -24,6 +26,8 @@ public abstract class SuperDark extends LinearOpMode {
 
         drive.init(hardwareMap, imuController);
         arm.init(hardwareMap);
+        distance.init(hardwareMap);
+
         foundServo=hardwareMap.get(Servo.class,"foundServo");
 
         imuController.init(hardwareMap, telemetry);
