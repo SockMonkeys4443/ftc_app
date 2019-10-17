@@ -157,7 +157,50 @@ public class DarkTeleOp extends SuperDark {
 
     }
 
-    void correctedDrive(double power) {
+    void driveCorrected(double power) {
+
+        float angle = imuController.getAngle360();
+        float angleAbs = java.lang.Math.abs(angle - 180);
+
+        //values for FL and BR motors
+        float[] modFL = new float[] {
+                -1,
+                -1,
+                java.lang.Math.abs((angleAbs - 135) / 45),
+                java.lang.Math.abs(((angleAbs - 135) / 45) - 1),
+                -1
+        };
+
+        //values for FR and BL motors
+        float[] modFR = new float[] {
+                java.lang.Math.abs((angleAbs - 45) / 45),
+                java.lang.Math.abs(((angleAbs - 45) / 45) - 1),
+                1,
+                1,
+                java.lang.Math.abs((angleAbs - 45) / 45)
+        };
+
+        int angleTest = (int) java.lang.Math.floor(angleAbs / 45);
+        int invert;
+
+        if (angle - 180 > 0) {
+            invert = -1;
+        } else {
+            invert = 1;
+        }
+        
+        double frontPower1 = -gamepad1.left_stick_y * power * modFL[angleTest] * invert;
+        double frontPower2 = -gamepad1.left_stick_y * power * modFR[angleTest] * invert;
+
+        double sidePower1 = gamepad1.left_stick_x * power * modFL[angleTest + 1] * invert;
+        double sidePower2 = gamepad1.left_stick_x * power * modFR[angleTest + 1] * invert;
+
+        double turnPower = gamepad1.right_stick_x * power;
+
+        drive.frontLeft.setPower((frontPower1 + sidePower1) + turnPower);
+        drive.frontRight.setPower((frontPower2 - sidePower2) - turnPower);
+        drive.backLeft.setPower((frontPower2 - sidePower2) + turnPower);
+        drive.backRight.setPower((frontPower1 + sidePower1) - turnPower);
 
     }
 
