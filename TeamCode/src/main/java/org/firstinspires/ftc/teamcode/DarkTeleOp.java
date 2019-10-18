@@ -63,6 +63,8 @@ public class DarkTeleOp extends SuperDark {
 
         telemetry.addData("Heading",imuController.getAngle()+" "+imuController.getAngle360());
         //telemetry.addData("HeadingA:",imuController.getAngle360());
+        telemetry.addData("angle 360", imuController.getAngle360());
+        telemetry.addData("driveMode", driveMode);
         telemetry.update();
 
         if(gamepad2.left_trigger!=0) {arm.clawPower(gamepad2.left_trigger);} else if (gamepad2.right_trigger!=0) {
@@ -199,6 +201,11 @@ public class DarkTeleOp extends SuperDark {
                 -1,
                 java.lang.Math.abs((angleAbs - 135) / 45),
                 java.lang.Math.abs(((angleAbs - 135) / 45) - 1),
+                1,
+                1,
+                -java.lang.Math.abs((angleAbs - 45) / 45),
+                -java.lang.Math.abs(((angleAbs - 45) / 45) - 1),
+                -1,
                 -1
         };
 
@@ -208,23 +215,21 @@ public class DarkTeleOp extends SuperDark {
                 java.lang.Math.abs(((angleAbs - 45) / 45) - 1),
                 1,
                 1,
-                java.lang.Math.abs((angleAbs - 45) / 45)
+                -java.lang.Math.abs((angleAbs - 135) / 45),
+                -java.lang.Math.abs(((angleAbs - 135) / 45) - 1),
+                -1,
+                -1,
+                java.lang.Math.abs((angleAbs - 45) / 45),
+                java.lang.Math.abs(((angleAbs - 45) / 45) - 1)
         };
 
-        int angleTest = (int) java.lang.Math.floor(angleAbs / 45);
-        int invert;
+        int angleTest = (int) java.lang.Math.floor(angle / 45) - 1;
 
-        if (angle - 180 > 0) {
-            invert = -1;
-        } else {
-            invert = 1;
-        }
+        double frontPower1 = -gamepad1.left_stick_y * power * modFL[angleTest];
+        double frontPower2 = -gamepad1.left_stick_y * power * modFR[angleTest];
 
-        double frontPower1 = -gamepad1.left_stick_y * power * modFL[angleTest] * invert;
-        double frontPower2 = -gamepad1.left_stick_y * power * modFR[angleTest] * invert;
-
-        double sidePower1 = gamepad1.left_stick_x * power * modFL[angleTest + 1] * invert;
-        double sidePower2 = gamepad1.left_stick_x * power * modFR[angleTest + 1] * invert;
+        double sidePower1 = gamepad1.left_stick_x * power * modFL[angleTest + 1];
+        double sidePower2 = gamepad1.left_stick_x * power * modFR[angleTest + 1];
 
         double turnPower = gamepad1.right_stick_x * power;
 
