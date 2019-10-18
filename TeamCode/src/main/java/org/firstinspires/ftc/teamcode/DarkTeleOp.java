@@ -193,43 +193,43 @@ public class DarkTeleOp extends SuperDark {
     void driveCorrected(double power) {
 
         float angle = imuController.getAngle360();
-        float angleAbs = java.lang.Math.abs(angle - 180);
-
-        //values for FL and BR motors
-        float[] modFL = new float[] {
-                -1,
-                -1,
-                java.lang.Math.abs((angleAbs - 135) / 45),
-                java.lang.Math.abs(((angleAbs - 135) / 45) - 1),
-                1,
-                1,
-                -java.lang.Math.abs((angleAbs - 45) / 45),
-                -java.lang.Math.abs(((angleAbs - 45) / 45) - 1),
-                -1,
-                -1
-        };
+        //float angleAbs = java.lang.Math.abs(angle - 180);
 
         //values for FR and BL motors
         float[] modFR = new float[] {
-                java.lang.Math.abs((angleAbs - 45) / 45),
-                java.lang.Math.abs(((angleAbs - 45) / 45) - 1),
                 1,
                 1,
-                -java.lang.Math.abs((angleAbs - 135) / 45),
-                -java.lang.Math.abs(((angleAbs - 135) / 45) - 1),
+                java.lang.Math.abs(((angle - 135) / 45) - 1),
+                java.lang.Math.abs(((angle - 135) / 45)),
                 -1,
                 -1,
-                java.lang.Math.abs((angleAbs - 45) / 45),
-                java.lang.Math.abs(((angleAbs - 45) / 45) - 1)
+                -java.lang.Math.abs(((angle - 270) / 45) - 1),
+                -java.lang.Math.abs((angle - 270) / 45),
+                1,
+                1
         };
 
-        int angleTest = (int) java.lang.Math.floor(angle / 45) - 1;
+        //values for FL and BR motors
+        float[] modFL = new float[] {
+                java.lang.Math.abs(((angle - 45) / 45) - 1),
+                java.lang.Math.abs((angle - 45) / 45),
+                -1,
+                -1,
+                -java.lang.Math.abs(((angle - 180) / 45) - 1),
+                -java.lang.Math.abs((angle - 180) / 45),
+                1,
+                1,
+                java.lang.Math.abs(((angle - 45) / 45) - 1),
+                java.lang.Math.abs((angle - 45) / 45)
+        };
+
+        int angleTest = (int) java.lang.Math.floor(angle / 45);
 
         double frontPower1 = -gamepad1.left_stick_y * power * modFL[angleTest];
         double frontPower2 = -gamepad1.left_stick_y * power * modFR[angleTest];
 
-        double sidePower1 = gamepad1.left_stick_x * power * modFL[angleTest + 1];
-        double sidePower2 = gamepad1.left_stick_x * power * modFR[angleTest + 1];
+        double sidePower1 = gamepad1.left_stick_x * power * modFL[angleTest + 2];
+        double sidePower2 = gamepad1.left_stick_x * power * modFR[angleTest + 2];
 
         double turnPower = gamepad1.right_stick_x * power;
 
