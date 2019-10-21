@@ -113,11 +113,11 @@ public class DarkTeleOp extends SuperDark {
 
     void toggleDrive() {
         if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.DIAGONAL;}
-        else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
+        //else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
         else {driveMode=DriveMode.NORMAL;}
     }
     void toggleServo() {
-        if (foundServo.getPosition()==0) {foundServo.setPosition(180);}
+        if (foundServo.getPosition()==0) {foundServo.setPosition(1);}
         else {foundServo.setPosition(0);}
     }
     void togglePosition() {
