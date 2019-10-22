@@ -190,6 +190,7 @@ public class DarkTeleOp extends SuperDark {
 
     void driveCorrected(double power) {
 
+        //gets the robots current angle
         float angle = imuController.getAngle360();
 
         //values for FL and BR motors
@@ -220,6 +221,7 @@ public class DarkTeleOp extends SuperDark {
                 1
         };
 
+        //finds which value to use from the arrays
         int angleTest = (int) (java.lang.Math.floor(angle / 45)) + 2;
 
 
