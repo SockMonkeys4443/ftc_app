@@ -63,6 +63,7 @@ public class DarkTeleOp extends SuperDark {
 
         telemetry.addData("Heading",imuController.getAngle()+" "+imuController.getAngle360());
         //telemetry.addData("HeadingA:",imuController.getAngle360());
+        telemetry.addData("driveMode", driveMode);
         telemetry.update();
 
         if(gamepad2.left_trigger!=0) {arm.clawPower(gamepad2.left_trigger);} else if (gamepad2.right_trigger!=0) {
@@ -113,7 +114,7 @@ public class DarkTeleOp extends SuperDark {
 
     void toggleDrive() {
         if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.DIAGONAL;}
-        //else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
+        else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
         else {driveMode=DriveMode.NORMAL;}
     }
     void toggleServo() {
