@@ -29,6 +29,7 @@ public class DarkTeleOp extends SuperDark {
     @Override
     public void darkRunning() {
 
+        //drive
         if (driveMode==DriveMode.NORMAL) {
             driveNormal(drivePower);
         }
@@ -42,8 +43,8 @@ public class DarkTeleOp extends SuperDark {
             driveNormal(drivePower);
         }
 
-        buttonUpdate();
 
+        //buttons
         if (yPressed()) {
             toggleDrive();
         }
@@ -59,62 +60,66 @@ public class DarkTeleOp extends SuperDark {
             toggleSpeed();
         }
 
+        //arm power
         arm.armPower(gamepad2.right_stick_y);
 
+        //telemetry
         telemetry.addData("Heading",imuController.getAngle()+" "+imuController.getAngle360());
         telemetry.addData("HeadingA:",imuController.getAngle360());
         telemetry.addData("driveMode", driveMode);
+        telemetry.addData("Drive Power", drivePower);
         telemetry.update();
 
+        //claw
         if(gamepad2.left_trigger!=0) {arm.clawPower(gamepad2.left_trigger);} else if (gamepad2.right_trigger!=0) {
             arm.clawPower(-gamepad2.right_trigger); } else {arm.clawPower(0);}
 
+        //imu
         imuController.updatePosition();
 
     }
 
 
-    boolean aWasPressed;
-    boolean bWasPressed;
-    boolean xWasPressed;
-    boolean yWasPressed;
+    //button control
+    boolean aButtonState;
+    boolean bButtonState;
+    boolean xButtonState;
+    boolean yButtonState;
 
     boolean aPressed() {
-        if(!aWasPressed && gamepad1.a) {
-            aWasPressed = true;
-            return true;
-        } else {return false;}
+        if( gamepad1.a) {
+            aButtonState = !aButtonState;
+
+        }
+        return aButtonState;
     }
     boolean bPressed() {
-        if(!bWasPressed && gamepad1.b) {
-            bWasPressed = true;
-            return true;
-        } else {return false;}
+        if( gamepad1.b) {
+            bButtonState = !bButtonState;
+
+        }
+        return bButtonState;
     }
     boolean xPressed() {
-        if(!xWasPressed && gamepad1.x) {
-            xWasPressed = true;
-            return true;
-        } else {return false;}
+        if( gamepad1.x) {
+            xButtonState = !xButtonState;
+
+        }
+        return aButtonState;
     }
     boolean yPressed() {
-        if(!yWasPressed && gamepad1.y) {
-            yWasPressed = true;
-            return true;
-        } else {return false;}
+        if( gamepad1.y) {
+            yButtonState = !yButtonState;
+
+        }
+        return yButtonState;
     }
 
-    void buttonUpdate() {
-        if(aWasPressed&&!gamepad1.a){aWasPressed=false;}
-        if(bWasPressed&&!gamepad1.b){bWasPressed=false;}
-        if(xWasPressed&&!gamepad1.x){xWasPressed=false;}
-        if(yWasPressed&&!gamepad1.y){yWasPressed=false;}
 
-    }
-
+    //toggles
     void toggleDrive() {
         if (driveMode==DriveMode.NORMAL) {driveMode=DriveMode.DIAGONAL;}
-        else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
+        //else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
         else {driveMode=DriveMode.NORMAL;}
     }
     void toggleServo() {
@@ -131,6 +136,11 @@ public class DarkTeleOp extends SuperDark {
         else {drivePower=1;}
     }
 
+
+
+    //Drive Methods
+
+
     void driveNormal(double power) {
 
         double frontPower = -gamepad1.left_stick_y*power;
@@ -138,11 +148,21 @@ public class DarkTeleOp extends SuperDark {
 
         double turnPower = gamepad1.right_stick_x*power;
 
+        if (java.lang.Math.abs(sidePower) < java.lang.Math.abs(frontPower) / 3) {
+            sidePower = 0;
+        }
+
+        if (java.lang.Math.abs(frontPower) < java.lang.Math.abs(sidePower) / 3) {
+            frontPower = 0;
+        }
+
         drive.frontLeft.setPower((frontPower +sidePower) +turnPower);
         drive.frontRight.setPower((frontPower-sidePower) -turnPower);
         drive.backLeft.setPower((frontPower-sidePower) +turnPower);
         drive.backRight.setPower((frontPower+sidePower) -turnPower);
 
+        telemetry.addData("frontPower", frontPower);
+        telemetry.addData("sidePower", sidePower);
     }
 
 
@@ -240,5 +260,6 @@ public class DarkTeleOp extends SuperDark {
         drive.backRight.setPower((frontPower1 + sidePower1) - turnPower);
 
     }
+
 
 }
