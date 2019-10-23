@@ -20,7 +20,7 @@ public class DarkTeleOp extends SuperDark {
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
 
-    DriveMode driveMode = DriveMode.NORMAL;
+    DriveMode driveMode = DriveMode.DIAGONAL;
     PositionMode positionMode = PositionMode.NORMAL;
 
     @Override
