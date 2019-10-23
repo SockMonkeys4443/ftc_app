@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class DarkTeleOp extends SuperDark {
 
 
-    enum DriveMode {NORMAL, DIAGONAL, ADJUSTED}
+    enum DriveMode { DIAGONAL, NORMAL, ADJUSTED}
 
     double drivePower;
 
@@ -42,6 +42,7 @@ public class DarkTeleOp extends SuperDark {
             driveNormal(drivePower);
         }
 
+        buttonUpdate();
 
         //buttons
         if (yPressed()) {
@@ -149,12 +150,12 @@ public class DarkTeleOp extends SuperDark {
 
         //toggles
         void toggleDrive() {
-            if (driveMode == DriveMode.NORMAL) {
-                driveMode = DriveMode.DIAGONAL;
+            if (driveMode == DriveMode.DIAGONAL) {
+                driveMode = DriveMode.NORMAL;
             }
             //else if (driveMode==DriveMode.DIAGONAL) {driveMode=DriveMode.ADJUSTED;}
             else {
-                driveMode = DriveMode.NORMAL;
+                driveMode = DriveMode.DIAGONAL;
             }
         }
         void toggleServo() {
