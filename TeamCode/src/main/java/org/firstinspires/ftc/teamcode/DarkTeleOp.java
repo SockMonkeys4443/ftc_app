@@ -62,7 +62,7 @@ public class DarkTeleOp extends SuperDark {
         arm.armPower(gamepad2.right_stick_y);
 
         telemetry.addData("Heading",imuController.getAngle()+" "+imuController.getAngle360());
-        //telemetry.addData("HeadingA:",imuController.getAngle360());
+        telemetry.addData("HeadingA:",imuController.getAngle360());
         telemetry.addData("driveMode", driveMode);
         telemetry.update();
 
@@ -222,8 +222,8 @@ public class DarkTeleOp extends SuperDark {
                 1
         };
 
-        //finds which value to use from the arrays
-        int angleTest = (int) (java.lang.Math.floor(angle / 45)) + 2;
+        //finds which value to use from the arrays, uses max function to prevent an error
+        int angleTest = java.lang.Math.max((int) (java.lang.Math.floor(angle / 45)) + 2, 9);
 
 
         double frontPower1 = -gamepad1.left_stick_y * power * modFL[angleTest];
