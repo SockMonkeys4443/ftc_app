@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-@Autonomous(name="Dark Auto Go Left", group="test")
-public class DarkAutoTest extends SuperDark {
+@Autonomous(name="Dark Auto Go Right", group="test")
+public class DarkAutoTestRight extends SuperDark {
 
     @Override
     public void darkInit() {
@@ -15,7 +13,6 @@ public class DarkAutoTest extends SuperDark {
     @Override
     public void darkRunning() {
         double timeSince = getRuntime();
-        foundServo.setPosition(30);
         drive.goForwards(0.5);
         while(opModeIsActive() && getRuntime()-timeSince<4000000 && distance.cmFront() > 20) {
             telemetry.addData("Time:",timeSince-getRuntime());
@@ -34,14 +31,8 @@ public class DarkAutoTest extends SuperDark {
         foundServo.setPosition(0.5);
         sleep(100);
         drive.stopAll();
-        //deploy arm
-        arm.armPower(0.5f);
         sleep(500);
-        arm.armPower(0);
-        sleep(500);
-        arm.armPower(-0.5f);
-        sleep(500);
-        drive.strafeLeft(0.5);
+        drive.strafeRight(0.5);
         //timeSince = getRuntime();
         while(opModeIsActive() && distance.cmFront() > 20) {
             telemetry.addData("Time:",timeSince-getRuntime());
