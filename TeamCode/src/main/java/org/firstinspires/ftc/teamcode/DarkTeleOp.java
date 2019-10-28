@@ -302,6 +302,10 @@ public class DarkTeleOp extends SuperDark {
                     1
             };
 
+            //sets any values less than 0.33 to 0
+            modFL = zeroFloatArrayValues(modFL, .33f);
+            modFR = zeroFloatArrayValues(modFR, .33f);
+
             //finds which value to use from the arrays, uses max function to prevent an error
             int angleTest = java.lang.Math.max((int) (java.lang.Math.floor(angle / 45)) + 2, 9);
 
@@ -321,6 +325,18 @@ public class DarkTeleOp extends SuperDark {
 
         }
 
+    private float[] zeroFloatArrayValues(float[] array, float threshold) {
 
+        //checks each value of the array and sets any values less than the threshold to 0
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] < java.lang.Math.abs(threshold)) {
+                array[i] = 0;
+            }
+        }
+        return array;
     }
+
+}
+
+
 
