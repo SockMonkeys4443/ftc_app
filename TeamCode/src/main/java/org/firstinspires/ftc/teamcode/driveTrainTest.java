@@ -43,7 +43,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @TeleOp(name="Drive Train Test", group="Linear Opmode")
-@Disabled
+
 public class driveTrainTest extends LinearOpMode {
 //declaring the program
 
