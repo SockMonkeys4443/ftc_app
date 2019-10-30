@@ -17,7 +17,7 @@ public class DarkAutoTest extends SuperDark {
         double timeSince = getRuntime();
         foundServo.setPosition(30);
         drive.goForwards(0.5);
-        while(opModeIsActive() && getRuntime()-timeSince<4000000 && distance.cmFront() > 20) {
+        while(opModeIsActive() && getRuntime()-timeSince<4 && distance.cmFront() > 20) {
             telemetry.addData("Time:",timeSince-getRuntime());
             telemetry.addData("Distance",distance.cmFront());
             telemetry.update();
@@ -26,7 +26,7 @@ public class DarkAutoTest extends SuperDark {
         sleep(2000);
         drive.strafeLeft(0.5);
         timeSince = getRuntime();
-        while(opModeIsActive() && getRuntime()-timeSince<4000000 && distance.cmFront() < 40) {
+        while(opModeIsActive() && getRuntime()-timeSince<4 && distance.cmFront() < 40) {
             telemetry.addData("Time:",timeSince-getRuntime());
             telemetry.addData("Distance",distance.cmFront());
             telemetry.update();

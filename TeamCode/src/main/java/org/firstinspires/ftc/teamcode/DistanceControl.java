@@ -19,7 +19,7 @@ public class DistanceControl {
 
     void init(HardwareMap hwMap) {
         sensorFront = hwMap.get(Rev2mDistanceSensor.class,"sensorFront");
-        //sensorBack = hwMap.get(DistanceSensor.class,"sensorBack");
+        sensorBack = hwMap.get(DistanceSensor.class,"sensorBack");
         //sensorLeft = hwMap.get(DistanceSensor.class,"sensorLeft");
         //sensorRight = hwMap.get(DistanceSensor.class,"sensorRight");
 

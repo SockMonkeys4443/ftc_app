@@ -17,14 +17,15 @@ public abstract class SuperDark extends LinearOpMode {
     Servo foundServo;
 
     IMUController imuController = new IMUController();
-    private ElapsedTime runtime = new ElapsedTime();
-        //I lost the game - anderson
+    private ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+    Timer timer = new Timer(runtime);
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initializing Dark Meronde...");
         telemetry.update();
 
-        drive.init(hardwareMap, imuController);
+        drive.init(this, hardwareMap, imuController);
         arm.init(hardwareMap);
         distance.init(hardwareMap);
 

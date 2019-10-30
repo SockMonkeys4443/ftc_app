@@ -12,6 +12,7 @@ public class Drive {
     DcMotor backLeft = null;
     DcMotor backRight = null;
 
+    SuperDark opMode;
 
     IMUController imuController;
     //double frontLeftPower;
@@ -19,7 +20,7 @@ public class Drive {
     //double backLeftPower;
     //double backRightPower;
 
-    void init(HardwareMap hwMap, IMUController imuController) {
+    void init(SuperDark opMode, HardwareMap hwMap, IMUController imuController) {
         frontLeft = hwMap.get(DcMotor.class,"frontLeft");
         frontRight = hwMap.get(DcMotor.class,"frontRight");
         backLeft = hwMap.get(DcMotor.class,"backLeft");
@@ -33,6 +34,9 @@ public class Drive {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //TODO: change how this works? I'm not sure if this will actually be able to check during loops and stuff the state of the opMode.
+        this.opMode = opMode;
 
 
         this.imuController = imuController;
@@ -81,13 +85,14 @@ public class Drive {
 
 
     void turn(float angle, double power) {
-
+        //TODO: find a way to put in the failsafe timing.
         float targetAngle = imuController.getAngle() + angle;
         if (targetAngle - imuController.getAngle() > 0) {
-            while (targetAngle > imuController.getAngle()) {
+            //TODO: test that this will actually STOP when requested.
+            while (targetAngle > imuController.getAngle() && opMode.opModeIsActive()) {
                 turnLeft(power);
             }
-        } else if (targetAngle - imuController.getAngle() < 0) {
+        } else if (targetAngle - imuController.getAngle() < 0 && opMode.opModeIsActive()) {
             while (targetAngle < imuController.getAngle()) {
                 turnRight(power);
             }
