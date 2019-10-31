@@ -16,7 +16,7 @@ public class DarkTeleOp extends SuperDark {
     enum DriveMode { DIAGONAL, NORMAL, ADJUSTED}
 
     double drivePower;
-    float armSpeed;
+    float armSpeed = 1f;
 
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
