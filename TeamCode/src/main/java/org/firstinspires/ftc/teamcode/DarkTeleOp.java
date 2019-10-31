@@ -165,10 +165,10 @@ public class DarkTeleOp extends SuperDark {
             }
         }
         void toggleServo() {
-            if (foundServo.getPosition() != 1) {
-                foundServo.setPosition(1);
+            if (foundServo.getPosition() == 0) {
+                foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
             } else {
-                foundServo.setPosition(0.3);
+                foundServo.setPosition(0);
             }
         }
         void togglePosition() {

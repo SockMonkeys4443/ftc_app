@@ -97,6 +97,7 @@ public class Drive {
                 turnRight(power);
             }
         }
+        stopAll();
     }
 
     void turnTo(float point, double power) {

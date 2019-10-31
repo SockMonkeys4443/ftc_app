@@ -28,19 +28,21 @@ public class DarkAutoFoundationBlue extends SuperDark {
         drive.stopAll();
 
         //TODO: make the turn method stop when the opMode stops
+        //Ok, I think I got it to work... still needs testing - Jordan.
         drive.turn(90,0.5);
 
-        //drive.strafeLeft(0.5);
-        //timeSince = getRuntime();
-        /*
-        while (opModeIsActive() && distance.cmFront() > 20) {
-            telemetry.addData("Time:", timeSince - getRuntime());
-            telemetry.addData("Distance", distance.cmFront());
-            telemetry.update();
-        }
-        telemetry.addData("Distance", distance.cmFront());
-        sleep(200);
-        drive.stopAll();*/
+        foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
+
+        drive.turnTo(0, 0.5);
+
+        //deploy arm
+        arm.armPower(0.5f);
+        sleep(500);
+        arm.armPower(0);
+        sleep(500);
+        arm.armPower(-0.5f);
+        sleep(500);
+
         stop();
     }
 }
