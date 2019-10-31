@@ -190,13 +190,12 @@ public class DarkTeleOp extends SuperDark {
 
             double turnPower = gamepad1.right_stick_x * power;
 
-            if (java.lang.Math.abs(sidePower) < java.lang.Math.abs(frontPower) / 3) {
-                sidePower = 0;
-            }
+            //sets side power or front power to zero if they are less than 1/3 the value of the other power
+            //this stops the robot from going at a slight angle when pushing the stick straight forward
+            sidePower = zeroDoubleValue(java.lang.Math.abs(sidePower), java.lang.Math.abs(frontPower), 0.33);
+            frontPower = zeroDoubleValue(java.lang.Math.abs(frontPower), java.lang.Math.abs(sidePower), 0.33);
 
-            if (java.lang.Math.abs(frontPower) < java.lang.Math.abs(sidePower) / 3) {
-                frontPower = 0;
-            }
+
 
             drive.frontLeft.setPower((frontPower + sidePower) + turnPower);
             drive.frontRight.setPower((frontPower - sidePower) - turnPower);
@@ -302,18 +301,25 @@ public class DarkTeleOp extends SuperDark {
             int angleTest = java.lang.Math.max((int) (java.lang.Math.floor(angle / 45)) + 2, 9);
 
 
-            double frontPower1 = -gamepad1.left_stick_y * power * modFL[angleTest];
-            double frontPower2 = -gamepad1.left_stick_y * power * modFR[angleTest];
+            double gameY = gamepad1.left_stick_y;
+            double gameX = gamepad1.left_stick_x;
 
-            double sidePower1 = gamepad1.left_stick_x * power * modFL[angleTest - 2];
-            double sidePower2 = gamepad1.left_stick_x * power * modFR[angleTest - 2];
+            gameY = zeroDoubleValue(java.lang.Math.abs(gameY), java.lang.Math.abs(gameX), 0.33);
+            gameX = zeroDoubleValue(java.lang.Math.abs(gameX), java.lang.Math.abs(gameY), 0.33);
+
+
+            double frontPower1 = -gameY * power * modFL[angleTest];
+            double frontPower2 = -gameY * power * modFR[angleTest];
+
+            double sidePower1 = gameX * power * modFL[angleTest - 2];
+            double sidePower2 = gameX * power * modFR[angleTest - 2];
 
             double turnPower = gamepad1.right_stick_x * power;
 
             drive.frontLeft.setPower((frontPower1 + sidePower1) + turnPower);
             drive.frontRight.setPower((frontPower2 - sidePower2) - turnPower);
-            drive.backLeft.setPower((frontPower2 - sidePower2) + turnPower);
             drive.backRight.setPower((frontPower1 + sidePower1) - turnPower);
+            drive.backLeft.setPower((frontPower2 - sidePower2) + turnPower);
 
         }
 
@@ -326,6 +332,19 @@ public class DarkTeleOp extends SuperDark {
             }
         }
         return array;
+    }
+
+    //these parameters need better names
+    private double zeroDoubleValue(double target, double compare, double threshold) {
+
+        double check = target;
+
+        //returns 0 if target is less than the comparison value * the threshold
+        if (target < compare * threshold) {
+            check = 0;
+        }
+
+        return check;
     }
 
 }
