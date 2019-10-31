@@ -16,6 +16,7 @@ public class DarkTeleOp extends SuperDark {
     enum DriveMode { DIAGONAL, NORMAL, ADJUSTED}
 
     double drivePower;
+    float armSpeed;
 
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
@@ -59,9 +60,12 @@ public class DarkTeleOp extends SuperDark {
         if (aPressed()) {
             toggleSpeed();
         }
+        if (y2Pressed()) {
+            toggleArmSpeed();
+        }
 
         //arm power
-        arm.armPower(gamepad2.right_stick_y);
+        arm.armPower(gamepad2.right_stick_y * armSpeed);
 
         //telemetry
         telemetry.addData("Heading", imuController.getAngle() + " " + imuController.getAngle360());
@@ -93,6 +97,7 @@ public class DarkTeleOp extends SuperDark {
     boolean bWasPressed;
     boolean xWasPressed;
     boolean yWasPressed;
+    boolean y2WasPressed;
 
     boolean aPressed() {
         if (!aWasPressed && gamepad1.a) {
@@ -131,12 +136,21 @@ public class DarkTeleOp extends SuperDark {
         }
     }
 
+    boolean y2Pressed() {
+        if (!y2WasPressed && gamepad2.y) {
+            y2WasPressed = true;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     void buttonUpdate() {
         if(aWasPressed&&!gamepad1.a){aWasPressed=false;}
         if(bWasPressed&&!gamepad1.b){bWasPressed=false;}
         if(xWasPressed&&!gamepad1.x){xWasPressed=false;}
         if(yWasPressed&&!gamepad1.y){yWasPressed=false;}
-
+        if(y2WasPressed&&!gamepad2.y){y2WasPressed=false;}
     }
 
 
@@ -151,10 +165,10 @@ public class DarkTeleOp extends SuperDark {
             }
         }
         void toggleServo() {
-            if (foundServo.getPosition() == 0) {
+            if (foundServo.getPosition() != 1) {
                 foundServo.setPosition(1);
             } else {
-                foundServo.setPosition(0);
+                foundServo.setPosition(0.3);
             }
         }
         void togglePosition() {
@@ -176,6 +190,14 @@ public class DarkTeleOp extends SuperDark {
                 drivePower = 0.3;
             } else {
                 drivePower = 1;
+            }
+        }
+
+        void toggleArmSpeed() {
+            if (armSpeed != 1f) {
+                armSpeed = 1f;
+            } else {
+                armSpeed = 0.4f;
             }
         }
 
