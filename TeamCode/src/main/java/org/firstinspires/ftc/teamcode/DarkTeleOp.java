@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="Dark TeleOp Test", group="test")
+@TeleOp(name="★Dark TeleOp★", group="test")
 public class DarkTeleOp extends SuperDark {
 
 
@@ -165,10 +165,10 @@ public class DarkTeleOp extends SuperDark {
             }
         }
         void toggleServo() {
-            if (foundServo.getPosition() == 0) {
+            if (foundServo.getPosition() == 1) {
                 foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
             } else {
-                foundServo.setPosition(0);
+                foundServo.setPosition(1);
             }
         }
         void togglePosition() {
@@ -214,8 +214,8 @@ public class DarkTeleOp extends SuperDark {
 
             //sets side power or front power to zero if they are less than 1/3 the value of the other power
             //this stops the robot from going at a slight angle when pushing the stick straight forward
-            sidePower = zeroDoubleValue(java.lang.Math.abs(sidePower), java.lang.Math.abs(frontPower), 0.33);
-            frontPower = zeroDoubleValue(java.lang.Math.abs(frontPower), java.lang.Math.abs(sidePower), 0.33);
+            sidePower = zeroDoubleValue(sidePower, frontPower, 0.33);
+            frontPower = zeroDoubleValue(frontPower, sidePower, 0.33);
 
 
 
@@ -362,7 +362,7 @@ public class DarkTeleOp extends SuperDark {
         double check = target;
 
         //returns 0 if target is less than the comparison value * the threshold
-        if (target < compare * threshold) {
+        if (java.lang.Math.abs(target) < java.lang.Math.abs(compare) * threshold) {
             check = 0;
         }
 

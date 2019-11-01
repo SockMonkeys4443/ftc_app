@@ -32,10 +32,11 @@ public class DarkAutoFoundationBlue extends SuperDark {
 
         //TODO: make the turn method stop when the opMode stops
         //Ok, I think I got it to work... still needs testing - Jordan.
+        foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
+        sleep(300);
+
         drive.turn(90,0.5);
 
-
-        foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
 
         sleep(500); //TODO: Andrew, this changed so idk if itll be weird still
 
@@ -52,19 +53,30 @@ public class DarkAutoFoundationBlue extends SuperDark {
         arm.armPower(0);
         sleep(500);
         arm.armPower(-0.5f);
-        sleep(500);
+        sleep(200);
 
         //TODO: Andrew, the arm should be put back down before we go under the bridge
 
         //go "backwards" behind the bridge using timing
-        drive.goForwards(0.5);
-        sleep(500);
+        //drive.goForwards(0.5);
+        //sleep(500);
 
+
+
+        drive.strafeLeft(0.5); //TODO: change this to a faster speed.. temporary for testing
+        sleep(750);
+
+        arm.armPower(0.5f);
+        sleep(250);
+
+        drive.goBackwards(0.3);
+        sleep(300);
+        /*
         drive.strafeLeft(0.3); //TODO: change this to a faster speed.. temporary for testing
         timer.restart();
         while(opModeIsActive() && timer.check() < 3 && distance.cmFront() > 30);
         drive.stopAll();
-
+        */
         stop();
     }
 }
