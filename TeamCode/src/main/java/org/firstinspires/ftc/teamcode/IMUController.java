@@ -54,7 +54,6 @@ public class IMUController {
         return angle;
     }
 
-    //will be true if robot needs to turn right
     public float testDirection(float target) {
         float angle;
 
