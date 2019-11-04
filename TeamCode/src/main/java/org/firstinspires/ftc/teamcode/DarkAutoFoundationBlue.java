@@ -32,15 +32,18 @@ public class DarkAutoFoundationBlue extends SuperDark {
 
         //TODO: make the turn method stop when the opMode stops
         //Ok, I think I got it to work... still needs testing - Jordan.
-        foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
-        sleep(300);
+
+        //sleep(300);
 
         drive.turn(90,0.5);
 
+        foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
+
+        
 
         sleep(500); //TODO: Andrew, this changed so idk if itll be weird still
 
-        drive.turnTo(0, 0.5);
+        drive.turnTo(0, 0.5); //TODO: change to regular turn??
         drive.turn(10, 0.2);
 
         //TODO: Andrew, this is the number one thing you need to change. the turn methods don't keep the robot
