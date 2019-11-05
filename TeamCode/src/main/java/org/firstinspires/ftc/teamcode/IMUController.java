@@ -62,18 +62,14 @@ public class IMUController {
     }
 
     public float testDirection(float target) {
-        float angleLeft = target - getAngle360();
-        float angleRight = getAngle360() - target;
-        float angle;
+        float angle = target - getAngle360();
 
-        if (Math.abs(angleLeft) < angleRight) {
-            angle = angleLeft;
-        } else {
-            angle = angleRight;
-        }
+
 
         return angle;
     }
+
+    // who's joe? joe biden for president!
 
     //Tracking
 
