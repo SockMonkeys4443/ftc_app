@@ -49,24 +49,31 @@ public class IMUController {
         return lastHeading;
     }
 
+    //this method gets the robot's angle
     public float getAngle360() {
         float angle = getAngle() - ((float)java.lang.Math.floor(getAngle() / 360) * 360);
         return angle;
     }
 
+    //this method returns a valid angle from a float
+    public float getAngle360(float angle) {
+        angle = (float) Math.floor(angle / 360) * 360;
+        return angle;
+    }
+
     public float testDirection(float target) {
+        float angleLeft = target - getAngle360();
+        float angleRight = getAngle360() - target;
         float angle;
 
-        if (target - getAngle360() < 180) {
-            angle = target - getAngle360();
+        if (Math.abs(angleLeft) < angleRight) {
+            angle = angleLeft;
         } else {
-            angle = target - getAngle360() - 360;
+            angle = angleRight;
         }
 
         return angle;
-
     }
-
 
     //Tracking
 
