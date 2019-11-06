@@ -15,6 +15,7 @@ public abstract class SuperDark extends LinearOpMode {
     OldArm arm = new OldArm();
     DistanceControl distance = new DistanceControl();
     Servo foundServo;
+    DeadWheels deadWheels = new DeadWheels();
 
     IMUController imuController = new IMUController();
     private ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
@@ -26,6 +27,7 @@ public abstract class SuperDark extends LinearOpMode {
         telemetry.update();
 
         drive.init(this, hardwareMap, imuController);
+        deadWheels.init(hardwareMap);
         arm.init(hardwareMap);
         distance.init(hardwareMap);
 

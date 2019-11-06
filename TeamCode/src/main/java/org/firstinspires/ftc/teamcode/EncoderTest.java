@@ -12,20 +12,21 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name="Encoder Test", group="test")
 public class EncoderTest extends LinearOpMode {
-    DcMotor motor;
-    float distance;
+    DeadWheels deadWheels = new DeadWheels();
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
-        motor = hardwareMap.get(DcMotor.class, "motor");
+        deadWheels.init(hardwareMap);
 
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
+
         while(opModeIsActive()) {
-            telemetry.addData("Encoder:",motor.getCurrentPosition());
+            telemetry.addData("Encoder:",deadWheels.getTicks(deadWheels.forward));
+            telemetry.addData("CM Travelled:", deadWheels.getCM(deadWheels.forward));
+            telemetry.addData("Rotations:",deadWheels.getRotations(deadWheels.forward));
             telemetry.update();
         }
     }
