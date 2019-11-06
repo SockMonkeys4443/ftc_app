@@ -94,7 +94,7 @@ public class Drive {
             }
             stopAll();
             while (targetAngle < imuController.getAngle() && opMode.opModeIsActive() ) {
-                turnRight(power);
+                turnRight(power/2);
             }
         } else if (targetAngle - imuController.getAngle() < 0) {
             while (targetAngle < imuController.getAngle() && opMode.opModeIsActive() ) {
@@ -102,7 +102,7 @@ public class Drive {
             }
             stopAll();
             while (targetAngle > imuController.getAngle() && opMode.opModeIsActive()) {
-                turnLeft(power);
+                turnLeft(power/2);
             }
         }
         stopAll();
