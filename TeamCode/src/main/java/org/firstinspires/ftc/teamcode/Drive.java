@@ -87,8 +87,7 @@ public class Drive {
     void turn(float angle, double power) {
         //TODO: find a way to put in the failsafe timing.
         float targetAngle = imuController.getAngle() + angle;
-        if (targetAngle - imuController.getAngle() > 0) {
-            //TODO: test that this will actually STOP when requested.
+        if (angle > 0) {
             while (targetAngle > imuController.getAngle() && opMode.opModeIsActive()) {
                 turnLeft(power);
             }
@@ -96,7 +95,7 @@ public class Drive {
             while (targetAngle < imuController.getAngle() && opMode.opModeIsActive() ) {
                 turnRight(power/2);
             }
-        } else if (targetAngle - imuController.getAngle() < 0) {
+        } else if (angle < 0) {
             while (targetAngle < imuController.getAngle() && opMode.opModeIsActive() ) {
                 turnRight(power);
             }
@@ -110,6 +109,12 @@ public class Drive {
 
     void turnTo(float point, double power) {
         turn(imuController.testDirection(point), power);
+    }
+
+    void turnTo(float point, double power, double adjust) {
+
+        turn(imuController.testDirection(point), power);
+        power =
     }
 
    void turnRight(double power) {
