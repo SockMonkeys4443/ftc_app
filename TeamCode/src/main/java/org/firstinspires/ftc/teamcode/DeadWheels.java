@@ -46,7 +46,7 @@ public class DeadWheels {
     }
 
     private float cmToRotations(float cm) {
-        return cm/wheelCircumfrenceMM;
+        return 10*cm/wheelCircumfrenceMM;
     }
 
     private float ticksToCM(int ticks ) {

@@ -83,6 +83,54 @@ public class Drive {
 
     //needs better names
 
+    /**
+     *
+     * may or may not work
+     * @author - Jordan
+     *
+     */
+    void newTurn(float angle, double power) {
+        //positive is left
+        //find a way to do failsafe time
+        boolean direction;
+        float targetAngle = imuController.getAngle() + angle;
+        //true is left ( i think )
+        if(angle>0) {direction = true;}
+        else if(angle<0) {direction = false;}
+        else {return;}
+
+        //turn left
+        if(direction) {
+            float startDifference = targetAngle-imuController.getAngle();
+            while(imuController.getAngle() < targetAngle) {
+                //robot is still not far enough to the left
+                float difference = targetAngle-imuController.getAngle();
+                float ratioComplete = difference/startDifference;
+                //will always make sure the power modifier is (equal to or) above .2
+                float ratioAdjusted = Math.max(ratioComplete,0.2f);
+                //will always make sure the power modifier is (equal to or) below 1
+                ratioAdjusted = Math.min(ratioAdjusted,1f);
+                turnLeft(power*ratioAdjusted);
+            }
+            stopAll();
+        }
+
+        //turn right
+        if(!direction) {
+            float startDifference = imuController.getAngle()-targetAngle;
+            while(imuController.getAngle() > targetAngle) {
+                //robot is still not far enough to the right
+                float difference = imuController.getAngle()-targetAngle;
+                float ratioComplete = difference/startDifference;
+                //will always make sure the power modifier is (equal to or) above .2
+                float ratioAdjusted = Math.max(ratioComplete,0.2f);
+                //will always make sure the power modifier is (equal to or) below 1
+                ratioAdjusted = Math.min(ratioAdjusted,1f);
+                turnRight(power*ratioAdjusted);
+            }
+            stopAll();
+        }
+    }
 
     void turn(float angle, double power) {
         //TODO: find a way to put in the failsafe timing.
@@ -114,7 +162,7 @@ public class Drive {
     void turnTo(float point, double power, double adjust) {
 
         turn(imuController.testDirection(point), power);
-        power =
+        //power =
     }
 
    void turnRight(double power) {
