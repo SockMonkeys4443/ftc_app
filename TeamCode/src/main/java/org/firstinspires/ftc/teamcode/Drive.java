@@ -90,6 +90,7 @@ public class Drive {
     //needs better names
 
 
+
     void turn(float angle, double power) {
         //TODO: find a way to put in the failsafe timing.
         float targetAngle = imuController.getAngle() + angle;
@@ -116,7 +117,7 @@ public class Drive {
     void turnTo(float point, double power) {
         turn(imuController.testDirection(point), power);
     }
-    
+
 
    void turnRight(double power) {
         frontLeft.setPower(power);
