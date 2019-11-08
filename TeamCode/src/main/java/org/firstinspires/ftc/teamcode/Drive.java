@@ -7,6 +7,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Drive {
+
+    public enum Direction {
+        LEFT,
+        RIGHT
+    }
+
     DcMotor frontLeft = null;
     DcMotor frontRight = null;
     DcMotor backLeft = null;
@@ -110,18 +116,70 @@ public class Drive {
     void turnTo(float point, double power) {
         turn(imuController.testDirection(point), power);
     }
-
-    void turnTo(float point, double power, double adjust) {
-
-        turn(imuController.testDirection(point), power);
-        power =
-    }
+    
 
    void turnRight(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(-power);
         backLeft.setPower(power);
         backRight.setPower(-power);
+    }
+
+    void newTurn(float angle, double power) {
+        //positive is left
+        //find a way to do failsafe time
+        Direction direction;
+        float targetAngle = imuController.getAngle() + angle;
+        //true is left ( i think )
+        if(angle>0) {direction = Direction.LEFT;}
+        else if(angle<0) {direction = Direction.RIGHT;}
+        else {return;}
+
+        //turn left
+        if(direction == Direction.LEFT) {
+            float startDifference = targetAngle-imuController.getAngle();
+            while(imuController.getAngle() < targetAngle && opMode.opModeIsActive()) {
+                //robot is still not far enough to the left
+                float difference = targetAngle-imuController.getAngle();
+                float differenceRatio = difference/startDifference;
+
+                //makes an upside down parabola for the turn
+                float modifier = -1 * (float) Math.pow(differenceRatio,4) + 1;
+
+                //will always make sure the power modifier is (equal to or) above .2
+                modifier = Math.max(modifier, 0.2f);
+                //will always make sure the power modifier is (equal to or) below 1
+                modifier = Math.min(modifier, 1f);
+
+                turnLeft(power * modifier);
+            }
+            stopAll();
+        }
+
+        //turn right
+        if(direction == Direction.RIGHT) {
+            float startDifference = imuController.getAngle()-targetAngle;
+            while(imuController.getAngle() > targetAngle && opMode.opModeIsActive()) {
+                //robot is still not far enough to the right
+                float difference = imuController.getAngle()-targetAngle;
+                float differenceRatio = difference/startDifference;
+
+                //makes an upside down parabola for the turn
+                float modifier =  -1 * (float) Math.pow(differenceRatio,4) + 1;
+
+                //will always make sure the power modifier is (equal to or) above .2
+                modifier = Math.max(modifier, 0.2f);
+                //will always make sure the power modifier is (equal to or) below 1
+                modifier = Math.min(modifier, 1f);
+
+                turnRight(power * modifier);
+            }
+            stopAll();
+        }
+    }
+
+    void testTurnTo(Direction direction, double power) {
+
     }
 
 
