@@ -210,7 +210,7 @@ public class DarkTeleOp extends SuperDark {
             double frontPower = -gamepad1.left_stick_y * power;
             double sidePower = gamepad1.left_stick_x * power;
 
-            double turnPower = gamepad1.right_stick_x * power;
+            double turnPower = gamepad1.right_stick_x * power * 0.8;
 
             //sets side power or front power to zero if they are less than 1/3 the value of the other power
             //this stops the robot from going at a slight angle when pushing the stick straight forward
@@ -233,7 +233,7 @@ public class DarkTeleOp extends SuperDark {
             double frontPower = -gamepad1.left_stick_y * power;
             double sidePower = gamepad1.left_stick_x * power;
 
-            double turnPower = gamepad1.right_stick_x * power;
+            double turnPower = gamepad1.right_stick_x * power * 0.8;
 
         /*
         drive.frontLeft.setPower((frontPower +sidePower) +turnPower);
