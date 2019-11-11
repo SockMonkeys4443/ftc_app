@@ -18,7 +18,7 @@ public abstract class SuperDark extends LinearOpMode {
     DeadWheels deadWheels = new DeadWheels();
 
     IMUController imuController = new IMUController();
-    private ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
+    public ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
     Timer timer = new Timer(runtime);
 
     @Override
@@ -26,7 +26,7 @@ public abstract class SuperDark extends LinearOpMode {
         telemetry.addData("Status", "Initializing Dark Meronde...");
         telemetry.update();
 
-        drive.init(this, hardwareMap, imuController);
+        drive.init(this);
         deadWheels.init(hardwareMap);
         arm.init(hardwareMap);
         distance.init(hardwareMap);

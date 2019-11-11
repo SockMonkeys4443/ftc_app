@@ -41,8 +41,8 @@ public class DarkAutoFoundationRed extends SuperDark {
         //something broke here
         sleep(2500);
 
-        //drive.turn(90, 0.75);
-        drive.turnTo(0, 0.75);
+        drive.newTurn(90, 0.75);
+        //drive.turnTo(0, 0.75);
 
 
         //deploy arm
@@ -54,6 +54,11 @@ public class DarkAutoFoundationRed extends SuperDark {
         sleep(200);
 
 
+        //15 forwards
+        drive.driveDistance(DeadWheels.forward, 15, 1, 5);
+        //50 to the right
+        drive.driveDistance(DeadWheels.sideways, 50, 1, 8);
+
         //go "backwards" behind the bridge using timing
         //drive.goForwards(0.5);
         //sleep(500);
@@ -61,11 +66,11 @@ public class DarkAutoFoundationRed extends SuperDark {
 
 
         //go "backwards" behind the bridge using timing
-        drive.goForwards(1);
-        sleep(250);
+        //drive.goForwards(1);
+        //sleep(250);
 
-        drive.strafeRight(1);
-        sleep(500);
+        //drive.strafeRight(1);
+        //sleep(500);
         stop();
     }
 }

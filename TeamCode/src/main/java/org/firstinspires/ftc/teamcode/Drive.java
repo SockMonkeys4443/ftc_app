@@ -21,16 +21,20 @@ public class Drive {
     SuperDark opMode;
 
     IMUController imuController;
+    DeadWheels deadWheels;
     //double frontLeftPower;
     //double frontRightPower;
     //double backLeftPower;
     //double backRightPower;
 
-    void init(SuperDark opMode, HardwareMap hwMap, IMUController imuController) {
-        frontLeft = hwMap.get(DcMotor.class,"frontLeft");
-        frontRight = hwMap.get(DcMotor.class,"frontRight");
-        backLeft = hwMap.get(DcMotor.class,"backLeft");
-        backRight = hwMap.get(DcMotor.class,"backRight");
+    void init(SuperDark opMode) {
+        this.opMode = opMode;
+
+
+        frontLeft = opMode.hardwareMap.get(DcMotor.class,"frontLeft");
+        frontRight = opMode.hardwareMap.get(DcMotor.class,"frontRight");
+        backLeft = opMode.hardwareMap.get(DcMotor.class,"backLeft");
+        backRight = opMode.hardwareMap.get(DcMotor.class,"backRight");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -41,11 +45,10 @@ public class Drive {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //TODO: change how this works? I'm not sure if this will actually be able to check during loops and stuff the state of the opMode.
-        this.opMode = opMode;
 
-
-        this.imuController = imuController;
+        this.imuController = opMode.imuController;
+        //this.deadWheels = deadWheels;
+        this.deadWheels = opMode.deadWheels;
     }
 
     //Sets all motors to Zero power
@@ -145,7 +148,7 @@ public class Drive {
                 float differenceRatio = difference/startDifference;
 
                 //makes an upside down parabola for the turn
-                float modifier = -1 * (float) Math.pow(differenceRatio,4) + 1;
+                float modifier = -1 * (float) Math.pow(1-differenceRatio,4) + 1;
 
                 //will always make sure the power modifier is (equal to or) above .2
                 modifier = Math.max(modifier, 0.2f);
@@ -166,7 +169,7 @@ public class Drive {
                 float differenceRatio = difference/startDifference;
 
                 //makes an upside down parabola for the turn
-                float modifier =  -1 * (float) Math.pow(differenceRatio,4) + 1;
+                float modifier =  -1 * (float) Math.pow(1-differenceRatio,4) +1;
 
                 //will always make sure the power modifier is (equal to or) above .2
                 modifier = Math.max(modifier, 0.2f);
@@ -184,5 +187,67 @@ public class Drive {
     }
 
 
+    /**
+     * Do not pass in a negative power, this method automatically handles the power being negative or positive
+     * @param axis
+     * @param distanceCM
+     * @param basePower - a positive number
+     */
+    void driveDistance(boolean axis, float distanceCM, double basePower, float timeoutSeconds) {
+
+        Timer driveTimer = new Timer(opMode.runtime);
+
+
+        //the robot will be satisfied with being within 1 cm of the target
+        final float PRECISION_CM = 1;
+
+        basePower = Math.abs(basePower);
+        int startTicks = deadWheels.getTicks(axis);
+        int distanceTicks = deadWheels.CMtoticks(distanceCM);
+        int targetTicks = startTicks + distanceTicks;
+
+        boolean finished = false;
+        driveTimer.restart();
+        while(!finished && opMode.opModeIsActive() && driveTimer.check() < timeoutSeconds) {
+            double power = basePower;
+
+            int currentTicks = deadWheels.getTicks(axis);
+            int offsetFromTarget = targetTicks - currentTicks;
+
+
+
+            float offsetRatio = offsetFromTarget/distanceTicks;
+
+            //makes an upside down parabola for the power
+            float modifier = -1 * (float) Math.pow(offsetRatio,4) + 1;
+
+            //will always make sure the power modifier is (equal to or) above .2
+            modifier = Math.max(modifier, 0.2f);
+            //will always make sure the power modifier is (equal to or) below 1
+            modifier = Math.min(modifier, 1f);
+
+            //need to go forward
+            if(offsetFromTarget > 0) {
+                power = basePower * modifier;
+            }
+
+            //need to reverse
+            if(offsetFromTarget < 0) {
+                power = basePower * modifier * -1;
+            }
+
+            //set drive power accordingly
+            if (axis == DeadWheels.forward) {
+                goForwards(power);
+            }
+            //sideways
+            else {
+                strafeRight(power);
+            }
+
+            //if the robot is close enough to the target, dictated by the PRECISION_CM variable
+            if(Math.abs(offsetFromTarget) < deadWheels.CMtoticks(PRECISION_CM) ) {finished = true; break;}
+        }
+    }
 
 }
