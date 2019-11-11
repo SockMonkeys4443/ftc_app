@@ -53,7 +53,6 @@ public class DarkAutoFoundationRed extends SuperDark {
         arm.armPower(-0.5f);
         sleep(200);
 
-        //TODO: Andrew, the arm should be put back down before we go under the bridge
 
         //go "backwards" behind the bridge using timing
         //drive.goForwards(0.5);
