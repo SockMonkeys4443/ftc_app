@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class DeadWheels {
 
-    final boolean forward = false;
-    final boolean sideways = true;
+    public static final boolean forward = false;
+    public static final boolean sideways = true;
 
     DcMotor forwardEncoder, sideEncoder;
 
@@ -30,7 +30,7 @@ public class DeadWheels {
 
     }
 
-    public float getTicks(boolean motor) {
+    public int getTicks(boolean motor) {
         if(motor) {return sideEncoder.getCurrentPosition();}
         else {return forwardEncoder.getCurrentPosition();}
     }
@@ -45,15 +45,15 @@ public class DeadWheels {
         else {return cmToRotations(ticksToCM(forwardEncoder.getCurrentPosition()));}
     }
 
-    private float cmToRotations(float cm) {
+    public float cmToRotations(float cm) {
         return 10*cm/wheelCircumfrenceMM;
     }
 
-    private float ticksToCM(int ticks ) {
+    public float ticksToCM(int ticks ) {
         return ticks * mmPerPulses*.1f;
     }
 
-    private int CMtoticks(float cm) {
+    public int CMtoticks(float cm) {
         return Math.round(cm*pulsesPerMM) * 10;
     }
 
