@@ -148,7 +148,7 @@ public class Drive {
                 float differenceRatio = difference/startDifference;
 
                 //makes an upside down parabola for the turn
-                float modifier = -1 * (float) Math.pow(1-differenceRatio,4) + 1;
+                float modifier = -1 * (float) Math.pow(1-differenceRatio,2) + 1;
 
                 //will always make sure the power modifier is (equal to or) above .2
                 modifier = Math.max(modifier, 0.2f);
@@ -169,7 +169,7 @@ public class Drive {
                 float differenceRatio = difference/startDifference;
 
                 //makes an upside down parabola for the turn
-                float modifier =  -1 * (float) Math.pow(1-differenceRatio,4) +1;
+                float modifier =  -1 * (float) Math.pow(1-differenceRatio,2) +1;
 
                 //will always make sure the power modifier is (equal to or) above .2
                 modifier = Math.max(modifier, 0.2f);
@@ -218,22 +218,27 @@ public class Drive {
 
             float offsetRatio = offsetFromTarget/distanceTicks;
 
-            //makes an upside down parabola for the power
-            float modifier = -1 * (float) Math.pow(offsetRatio,4) + 1;
+            //offsetRatio = 1 - offsetRatio;
+
+            float modifier = 1-offsetRatio;
 
             //will always make sure the power modifier is (equal to or) above .2
-            modifier = Math.max(modifier, 0.2f);
+            //modifier = Math.max(modifier, 0.05f);
             //will always make sure the power modifier is (equal to or) below 1
-            modifier = Math.min(modifier, 1f);
+            //modifier = Math.min(modifier, 1f);
 
             //need to go forward
             if(offsetFromTarget > 0) {
                 power = basePower * modifier;
+                power = Math.min(power, 1f);
+                power = Math.max(power, 0.1f);
             }
 
             //need to reverse
             if(offsetFromTarget < 0) {
                 power = basePower * modifier * -1;
+                power = Math.max(power, -1f);
+                power = Math.min(power, -0.1f);
             }
 
             //set drive power accordingly
@@ -245,9 +250,19 @@ public class Drive {
                 strafeRight(power);
             }
 
+            /*
+            if(opMode.TELEMETRY_ON) {
+                opMode.telemetry.addData("Distance Travelled: ",currentTicks-targetTicks);
+                opMode.telemetry.addData("Modifier: ", modifier);
+                opMode.telemetry.addData("Offset:",offsetFromTarget);
+                opMode.telemetry.addData("Power: ", power);
+                opMode.telemetry.update();
+            }*/
+
             //if the robot is close enough to the target, dictated by the PRECISION_CM variable
             if(Math.abs(offsetFromTarget) < deadWheels.CMtoticks(PRECISION_CM) ) {finished = true; break;}
         }
+        stopAll();
     }
 
 }

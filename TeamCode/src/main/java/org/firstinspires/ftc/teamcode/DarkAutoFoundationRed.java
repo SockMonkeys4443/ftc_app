@@ -12,15 +12,18 @@ public class DarkAutoFoundationRed extends SuperDark {
 
     @Override
     public void darkRunning() {
-        timer.restart();
-        drive.goBackwards(0.8);
-        while (opModeIsActive() && timer.check() < 4 && distance.cmBack() > 50); //TODO: make a method to do this part automatically.
-        drive.stopAll();
-        drive.goBackwards(0.3);
-        while (opModeIsActive() && timer.check() < 5 && distance.cmBack() > 10);
-        drive.stopAll();
+        //timer.restart();
+        //drive.goBackwards(0.8);
+        //while (opModeIsActive() && timer.check() < 4 && distance.cmBack() > 50) {telemetry.addData("Distance: ",distance.cmBack()); telemetry.update();} //TODO: make a method to do this part automatically.
+        //drive.stopAll();
+        //drive.goBackwards(0.3);
+        //while (opModeIsActive() && timer.check() < 5 && distance.cmBack() > 10) {telemetry.addData("Distance: ",distance.cmBack()); telemetry.update();}
+        //drive.stopAll();
+        drive.driveDistance(DeadWheels.forward, -67.5f, 0.3, 10);
         foundServo.setPosition(1);
         sleep(1000);
+
+
         drive.strafeRight(0.70);
         timer.restart();
         //strafes to the right while the foundation is still in front of us
