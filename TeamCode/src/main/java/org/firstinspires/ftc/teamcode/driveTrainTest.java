@@ -50,6 +50,8 @@ public class driveTrainTest extends LinearOpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
+    DarkColorSensor colorSensor;
+
     float slowRate = 1;
     float turnPower;
     boolean lockSlow = false;
@@ -79,6 +81,16 @@ public class driveTrainTest extends LinearOpMode {
             turnUpdate();
             slowUpdate();
             driveUpdate();
+
+            if (gamepad1.a) {
+                colorSensor.toggleLED();
+            }
+            if (gamepad1.b) {
+                colorSensor.addColorTelemetry(telemetry);
+            }
+            if (gamepad1.x) {
+                colorSensor.observeColorValues(500, telemetry);
+            }
 
             //sets the turn power
             turnPower = (gamepad1.right_stick_x);
