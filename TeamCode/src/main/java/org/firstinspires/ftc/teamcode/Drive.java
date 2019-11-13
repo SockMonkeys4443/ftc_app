@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Drive {
 
@@ -129,57 +126,55 @@ public class Drive {
         backRight.setPower(-power);
     }
 
-    void newTurn(float angle, double power) {
+    void newTurn(float degreesToTravel, double basePower) {
+
+
+        //TODO: fix going over 360 degrees
+        //the robot will be satisfied with being within 2 degrees of the target
+        final float PRECISION_DEGREES = 3;
+
+        Timer driveTimer = new Timer(opMode.runtime);
         //positive is left
-        //find a way to do failsafe time
         Direction direction;
-        float targetAngle = imuController.getAngle() + angle;
-        //true is left ( i think )
-        if(angle>0) {direction = Direction.LEFT;}
-        else if(angle<0) {direction = Direction.RIGHT;}
-        else {return;}
+        basePower = Math.abs(basePower);
+        float startAngle = imuController.getAngle();
+        float targetAngle = imuController.getAngle() + degreesToTravel;
 
-        //turn left
-        if(direction == Direction.LEFT) {
-            float startDifference = targetAngle-imuController.getAngle();
-            while(imuController.getAngle() < targetAngle && opMode.opModeIsActive()) {
-                //robot is still not far enough to the left
-                float difference = targetAngle-imuController.getAngle();
-                float differenceRatio = difference/startDifference;
+        //TODO: configure timed failsafe
+        while(opMode.opModeIsActive()) {
+            ///
+            float currentAngle = imuController.getAngle();
+            float degreesTravelled = currentAngle-startAngle;
+            float ratioIncomplete = degreesTravelled/degreesToTravel;
+            if(ratioIncomplete<0) ratioIncomplete=0;
+            float modifier = 1-ratioIncomplete;
+            double power = basePower;
 
-                //makes an upside down parabola for the turn
-                float modifier = -1 * (float) Math.pow(1-differenceRatio,2) + 1;
-
-                //will always make sure the power modifier is (equal to or) above .2
-                modifier = Math.max(modifier, 0.2f);
-                //will always make sure the power modifier is (equal to or) below 1
-                modifier = Math.min(modifier, 1f);
-
-                turnLeft(power * modifier);
+            if(targetAngle-currentAngle<0) {
+                power=-1*basePower;
             }
-            stopAll();
+
+            power = power*modifier;
+
+            if(power > 0) {
+                //will always make sure the power is (equal to or) above .15
+                power = Math.max(power, 0.15f);
+                //will always make sure the power is (equal to or) below 1
+                power = Math.min(power, 1f);
+            }
+            else {
+                //will always make sure the power is (equal to or) above .15
+                power = Math.min(power, -0.15f);
+                //will always make sure the power is (equal to or) below 1
+                power = Math.max(power, -1f);
+            }
+
+            turnLeft(power);
+
+            if(Math.abs(targetAngle-currentAngle)<PRECISION_DEGREES) {break;}
         }
 
-        //turn right
-        if(direction == Direction.RIGHT) {
-            float startDifference = imuController.getAngle()-targetAngle;
-            while(imuController.getAngle() > targetAngle && opMode.opModeIsActive()) {
-                //robot is still not far enough to the right
-                float difference = imuController.getAngle()-targetAngle;
-                float differenceRatio = difference/startDifference;
-
-                //makes an upside down parabola for the turn
-                float modifier =  -1 * (float) Math.pow(1-differenceRatio,2) +1;
-
-                //will always make sure the power modifier is (equal to or) above .2
-                modifier = Math.max(modifier, 0.2f);
-                //will always make sure the power modifier is (equal to or) below 1
-                modifier = Math.min(modifier, 1f);
-
-                turnRight(power * modifier);
-            }
-            stopAll();
-        }
+        stopAll();
     }
 
     void testTurnTo(Direction direction, double power) {
@@ -206,15 +201,12 @@ public class Drive {
         int distanceTicks = deadWheels.CMtoticks(distanceCM);
         int targetTicks = startTicks + distanceTicks;
 
-        boolean finished = false;
         driveTimer.restart();
-        while(!finished && opMode.opModeIsActive() && driveTimer.check() < timeoutSeconds) {
+        while(opMode.opModeIsActive() && driveTimer.check() < timeoutSeconds) {
             double power = basePower;
 
             int currentTicks = deadWheels.getTicks(axis);
             int offsetFromTarget = targetTicks - currentTicks;
-
-
 
             float offsetRatio = offsetFromTarget/distanceTicks;
 
@@ -250,17 +242,17 @@ public class Drive {
                 strafeRight(power);
             }
 
-            /*
-            if(opMode.TELEMETRY_ON) {
+
+            if(opMode.telemetryEnabled) {
                 opMode.telemetry.addData("Distance Travelled: ",currentTicks-targetTicks);
                 opMode.telemetry.addData("Modifier: ", modifier);
                 opMode.telemetry.addData("Offset:",offsetFromTarget);
                 opMode.telemetry.addData("Power: ", power);
                 opMode.telemetry.update();
-            }*/
+            }
 
             //if the robot is close enough to the target, dictated by the PRECISION_CM variable
-            if(Math.abs(offsetFromTarget) < deadWheels.CMtoticks(PRECISION_CM) ) {finished = true; break;}
+            if(Math.abs(offsetFromTarget) < deadWheels.CMtoticks(PRECISION_CM) ) {break;}
         }
         stopAll();
     }

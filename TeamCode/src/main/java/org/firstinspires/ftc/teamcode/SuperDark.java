@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public abstract class SuperDark extends LinearOpMode {
 
-    public final boolean TELEMETRY_ON = true;
+    public boolean telemetryEnabled = false;
 
     Drive drive = new Drive();
     OldArm arm = new OldArm();
