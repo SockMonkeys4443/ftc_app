@@ -177,6 +177,64 @@ public class Drive {
         stopAll();
     }
 
+    void newTurnVTwo(float degreesToTravel, double basePower, float seconds) {
+
+        //the robot will be satisfied with being within 3 degrees of the target
+        final float PRECISION_DEGREES = 3;
+
+        Timer driveTimer = new Timer(opMode.runtime);
+        //positive is left
+        Direction direction;
+        basePower = Math.abs(basePower);
+        float startAngle = imuController.getAngle180();
+        float targetAngle = imuController.getAngle180(imuController.getAngle180() + degreesToTravel);
+
+        driveTimer.restart();
+        //TODO: configure timed failsafe
+        while(opMode.opModeIsActive() && driveTimer.check() < seconds) {
+            ///
+            float currentAngle = imuController.getAngle180();
+            float degreesTravelled = currentAngle-startAngle;
+            float ratioIncomplete = degreesTravelled/degreesToTravel;
+            if(ratioIncomplete<0) ratioIncomplete=0;
+            float modifier = 1-ratioIncomplete;
+            double power = basePower;
+
+            if(targetAngle-currentAngle<0) {
+                power=-1*basePower;
+            }
+
+            power = power*modifier;
+
+            if(power > 0) {
+                //will always make sure the power is (equal to or) above .15
+                power = Math.max(power, 0.15f);
+                //will always make sure the power is (equal to or) below 1
+                power = Math.min(power, 1f);
+            }
+            else {
+                //will always make sure the power is (equal to or) above .15
+                power = Math.min(power, -0.15f);
+                //will always make sure the power is (equal to or) below 1
+                power = Math.max(power, -1f);
+            }
+
+            turnLeft(power);
+
+            if(opMode.telemetryEnabled) {
+                opMode.telemetry.addData("Current Angle: ", currentAngle);
+                opMode.telemetry.addData("Target Angle: ", targetAngle);
+                opMode.telemetry.addData("How far? ", Math.abs(targetAngle-currentAngle));
+                opMode.telemetry.addData("Distance to go: ", degreesToTravel);
+                opMode.telemetry.update();
+            }
+
+            if(Math.abs(targetAngle-currentAngle)<PRECISION_DEGREES) {break;}
+        }
+
+        stopAll();
+    }
+
     void testTurnTo(Direction direction, double power) {
 
     }
@@ -223,14 +281,15 @@ public class Drive {
             if(offsetFromTarget > 0) {
                 power = basePower * modifier;
                 power = Math.min(power, 1f);
-                power = Math.max(power, 0.1f);
+                power = Math.max(power, 0.25f);
             }
 
             //need to reverse
+            //TODO: issue?
             if(offsetFromTarget < 0) {
                 power = basePower * modifier * -1;
                 power = Math.max(power, -1f);
-                power = Math.min(power, -0.1f);
+                power = Math.min(power, -0.25f);
             }
 
             //set drive power accordingly

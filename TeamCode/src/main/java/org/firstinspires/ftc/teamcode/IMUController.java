@@ -61,6 +61,14 @@ public class IMUController {
         return angle;
     }
 
+    public float getAngle180() {
+        return getAngle360(getAngle())-180;
+    }
+
+    public float getAngle180(float angle) {
+        return getAngle360(angle)-180;
+    }
+
     public float testDirection(float target) {
         float angle = target - getAngle360();
 

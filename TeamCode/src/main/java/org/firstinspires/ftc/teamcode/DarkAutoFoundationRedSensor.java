@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Dark Auto Foundation Red", group="working")
-public class DarkAutoFoundationRed extends SuperDark {
+@Autonomous(name="✡ Dark Auto Foundation Red Distance Sensor", group="working")
+public class DarkAutoFoundationRedSensor extends SuperDark {
 
     @Override
     public void darkInit() {
@@ -12,7 +12,7 @@ public class DarkAutoFoundationRed extends SuperDark {
 
     @Override
     public void darkRunning() {
-        /*
+
         timer.restart();
         drive.goBackwards(0.8);
         while (opModeIsActive() && timer.check() < 1.33f && distance.cmBack() > 50) {
@@ -30,12 +30,6 @@ public class DarkAutoFoundationRed extends SuperDark {
         //drive.driveDistance(DeadWheels.forward, -67.5f, 0.3, 10);
         foundServo.setPosition(1);
         sleep(1000);
-        */
-
-        drive.driveDistance(DeadWheels.forward, -60.5f, 0.8, 2);
-        foundServo.setPosition(1);
-        sleep(1000);
-
 
         drive.strafeRight(0.70);
         timer.restart();
