@@ -43,6 +43,17 @@ public class DarkTeleOp extends SuperDark {
             driveNormal(drivePower);
         }
 
+        //color sensor
+        if (gamepad2.dpad_down) {
+            colorSensor.toggleLED();
+        }
+        if (gamepad2.dpad_left) {
+            colorSensor.addColorTelemetry(telemetry);
+        }
+        if (gamepad2.dpad_right) {
+            colorSensor.observeColorValues(500, telemetry);
+        }
+
         buttonUpdate();
 
         //buttons

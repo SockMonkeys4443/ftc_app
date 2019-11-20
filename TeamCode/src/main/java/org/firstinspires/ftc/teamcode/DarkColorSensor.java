@@ -14,10 +14,17 @@ public class DarkColorSensor {
 
     boolean ledState;
 
+    void init(SuperDark opMode) {
+        this.opMode = opMode;
+        colorSensor = opMode.hardwareMap.get(ColorSensor.class, "colorSensor");
+    }
+
 
     void toggleLED() {
         colorSensor.enableLed(!ledState);
     }
+
+
 
     //returns an int array: 0 -> red   1 -> blue   2 -> green
     int[] getColors() {
@@ -45,7 +52,11 @@ public class DarkColorSensor {
             greenValues.add(colorSensor.green());
             blueValues.add(colorSensor.blue());
 
-            opMode.sleep(10);
+            try {
+                Thread.sleep(10);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
 
 
