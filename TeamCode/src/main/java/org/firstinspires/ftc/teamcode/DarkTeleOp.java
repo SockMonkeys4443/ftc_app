@@ -18,6 +18,8 @@ public class DarkTeleOp extends SuperDark {
     double drivePower;
     float armSpeed = 1f;
 
+    String currentColor;
+
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
 
@@ -48,6 +50,14 @@ public class DarkTeleOp extends SuperDark {
             colorSensor.toggleLED();
         }
         if (gamepad2.dpad_left) {
+            if (colorSensor.checkForBlack()) {
+                currentColor = "black";
+            } else if (colorSensor.checkForYellow()) {
+                currentColor = "yellow";
+            } else {
+                currentColor = "None Detected";
+            }
+            telemetry.addData("color:", currentColor);
             colorSensor.addColorTelemetry(telemetry);
         }
         if (gamepad2.dpad_right) {
