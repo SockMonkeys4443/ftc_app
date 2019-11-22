@@ -85,4 +85,51 @@ public class DarkColorSensor {
 
     }
 
+    boolean checkForColor(int red, int green, int blue, int range) {
+        //these booleans might be less efficient but they make the code easier to read
+        boolean redPassed;
+        boolean greenPassed;
+        boolean bluePassed;
+
+        if (colorSensor.red() > red - range &&  colorSensor.red() < red + range) {
+            redPassed = true;
+        } else {
+            redPassed = false;
+        }
+
+        if (colorSensor.green() > green - range && colorSensor.green() < green + range) {
+            greenPassed = true;
+        } else {
+            greenPassed = false;
+        }
+
+        if (colorSensor.blue() > blue - range && colorSensor.blue() < blue + range) {
+            bluePassed = true;
+        } else {
+            bluePassed = false;
+        }
+
+        if (redPassed && greenPassed && bluePassed) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean checkForBlack() {
+        if (checkForColor(15, 15, 15, 15)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean checkForYellow() {
+        if (checkForColor(550, 375,175, 40)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
