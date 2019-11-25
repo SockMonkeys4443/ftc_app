@@ -13,18 +13,23 @@ public class DarkAutoTurnTest extends SuperDark {
     @Override
     public void darkRunning() {
         telemetryEnabled=true;
-        //drive.newTurnVTwo(90,0.8);
-        sleep(1000);
-        //drive.newTurnVTwo(180,0.8);
-        sleep(1000);
-        //drive.newTurnVTwo(270,0.8);
-        sleep(1000);
-        //drive.newTurnVTwo(-90,0.8);
-        sleep(1000);
-        //drive.newTurnVTwo(-180,0.8);
-        sleep(1000);
-        //drive.newTurnVTwo(-270,0.8);
-        sleep(1000);
+        drive.newTurn(-90, 0.4);
+        sleep(2000);
+        drive.newTurnVTwo(90,0.4, 5);
+
+        /*
+        sleep(2000);
+        drive.newTurnVTwo(180,0.4, 5);
+        sleep(2000);
+        drive.newTurnVTwo(270,0.4, 5);
+        sleep(2000);
+        drive.newTurnVTwo(-90,0.4, 5);
+        sleep(2000);
+        drive.newTurnVTwo(-180,0.4, 5);
+        sleep(2000);
+        drive.newTurnVTwo(-270,0.4, 5);
+        sleep(2000);
+        */
 
         stop();
     }

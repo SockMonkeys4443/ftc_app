@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import static org.firstinspires.ftc.teamcode.IMUController.angleDiff;
+import static org.firstinspires.ftc.teamcode.IMUController.getAngle360;
+
 
 public class Drive {
 
@@ -17,7 +20,7 @@ public class Drive {
 
     SuperDark opMode;
 
-    IMUController imuController;
+    IMUController   imuController;
     DeadWheels deadWheels;
     //double frontLeftPower;
     //double frontRightPower;
@@ -178,29 +181,29 @@ public class Drive {
     }
 
     void newTurnVTwo(float degreesToTravel, double basePower, float seconds) {
-
-        //the robot will be satisfied with being within 3 degrees of the target
+        //the robot will be satisfied with being within 2 degrees of the target
         final float PRECISION_DEGREES = 3;
+        final double MIN_SPEED = .5;
 
         Timer driveTimer = new Timer(opMode.runtime);
         //positive is left
         Direction direction;
         basePower = Math.abs(basePower);
-        float startAngle = imuController.getAngle180();
-        float targetAngle = imuController.getAngle180(imuController.getAngle180() + degreesToTravel);
+        float startAngle = imuController.getAngle360();
+        float targetAngle = getAngle360(startAngle+degreesToTravel);
 
         driveTimer.restart();
-        //TODO: configure timed failsafe
+
         while(opMode.opModeIsActive() && driveTimer.check() < seconds) {
             ///
-            float currentAngle = imuController.getAngle180();
-            float degreesTravelled = currentAngle-startAngle;
-            float ratioIncomplete = degreesTravelled/degreesToTravel;
-            if(ratioIncomplete<0) ratioIncomplete=0;
-            float modifier = 1-ratioIncomplete;
+            float currentAngle = imuController.getAngle360();
+            float degreesFromStart = angleDiff(startAngle,currentAngle);
+            float ratioComplete = degreesFromStart/degreesToTravel;
+            if(ratioComplete<0 || ratioComplete>1) ratioComplete=0;
+            float modifier = 1-ratioComplete; //(ratio incomplete)
             double power = basePower;
 
-            if(targetAngle-currentAngle<0) {
+            if(angleDiff(currentAngle, targetAngle)<0) {
                 power=-1*basePower;
             }
 
@@ -208,34 +211,59 @@ public class Drive {
 
             if(power > 0) {
                 //will always make sure the power is (equal to or) above .15
-                power = Math.max(power, 0.15f);
+                power = Math.max(power, MIN_SPEED);
                 //will always make sure the power is (equal to or) below 1
-                power = Math.min(power, 1f);
+                power = Math.min(power, 1);
             }
             else {
                 //will always make sure the power is (equal to or) above .15
-                power = Math.min(power, -0.15f);
+                power = Math.min(power, -MIN_SPEED);
                 //will always make sure the power is (equal to or) below 1
-                power = Math.max(power, -1f);
+                power = Math.max(power, -1);
             }
 
             turnLeft(power);
 
+            if(angleDiff(targetAngle,currentAngle)<PRECISION_DEGREES) {break;}
+
             if(opMode.telemetryEnabled) {
                 opMode.telemetry.addData("Current Angle: ", currentAngle);
                 opMode.telemetry.addData("Target Angle: ", targetAngle);
-                opMode.telemetry.addData("How far? ", Math.abs(targetAngle-currentAngle));
-                opMode.telemetry.addData("Distance to go: ", degreesToTravel);
+                opMode.telemetry.addData("% complete?", ratioComplete*100);
+                opMode.telemetry.addData("Degrees from the start: ", degreesFromStart);
                 opMode.telemetry.update();
             }
-
-            if(Math.abs(targetAngle-currentAngle)<PRECISION_DEGREES) {break;}
         }
 
         stopAll();
     }
 
-    void testTurnTo(Direction direction, double power) {
+    void newTurnTo(float targetAngle, double startPower, float seconds) {
+        float startAngle = imuController.getAngle();
+        double basePower = Math.abs(startPower);
+
+        //the robot will be satisfied with being within 2 degrees of the target
+        final float PRECISION_DEGREES = 2;
+
+        Timer turnTimer = new Timer(opMode.runtime);
+        turnTimer.restart();
+
+        while(opMode.opModeIsActive()) {
+            float currentAngle = imuController.getAngle();
+            float degreesToTarget = targetAngle-currentAngle;
+
+            //FINISH THIS TODO TODO TODO when the method andrew and jordan make for the different between two angles is done
+
+        }
+    }
+
+    /**
+     * @author Jordan
+     * @date 11-25-19
+     * @param targetAngle
+     * @param power
+     */
+    void newTurnTo(float targetAngle, double power) {
 
     }
 

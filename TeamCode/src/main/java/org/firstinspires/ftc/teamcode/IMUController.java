@@ -55,19 +55,23 @@ public class IMUController {
         return angle;
     }
 
-    //this method returns a valid angle from a float
-    public float getAngle360(float angle) {
+
+    /**
+     * @param angle An angle between -180 to 180
+     * @return The corresponding angle between 0 and 360
+     */
+    public static float getAngle360(float angle) {
         angle = (float) Math.floor(angle / 360) * 360;
         return angle;
     }
 
-    public float getAngle180() {
-        return getAngle360(getAngle())-180;
-    }
+    //public float getAngle180() {
+    //    return getAngle360(getAngle())-180;
+    //}
 
-    public float getAngle180(float angle) {
-        return getAngle360(angle)-180;
-    }
+    //public static float getAngle180(float angle) {
+    //    return getAngle360(angle)-180;
+    //}
 
     public float testDirection(float target) {
         float angle = target - getAngle360();
@@ -99,6 +103,19 @@ public class IMUController {
         telemetry.addData("IMU Z:",newPosition.z);
 
         return newPosition;
+    }
+
+    /**
+     * @see <a href="https://stackoverflow.com/questions/7570808/how-do-i-calculate-the-difference-of-two-angle-measures/30887154">Stackoverflow helped me</a>
+     * @param angle1
+     * @param angle2
+     * @return
+     */
+    public static float angleDiff(float angle1, float angle2) {
+        float phi = Math.abs(angle2 - angle1) % 360;       // This is either the distance or 360 - distance
+        float distance = phi > 180 ? 360 - phi : phi;
+        int sign = (angle1 - angle2 >= 0 && angle1 - angle2 <= 180) || (angle1 - angle2 <= -180 && angle1 - angle2>= -360) ? 1 : -1;
+        return distance*sign;
     }
 
     /*
