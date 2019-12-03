@@ -84,6 +84,9 @@ public class DarkTeleOp extends SuperDark {
         if (y2Pressed()) {
             toggleArmSpeed();
         }
+        if (x2Pressed()) {
+            toggleArmServo();
+        }
 
         //arm power
         arm.armPower(gamepad2.right_stick_y * armSpeed);
@@ -119,6 +122,7 @@ public class DarkTeleOp extends SuperDark {
     boolean xWasPressed;
     boolean yWasPressed;
     boolean y2WasPressed;
+    boolean x2WasPressed;
 
     boolean aPressed() {
         if (!aWasPressed && gamepad1.a) {
@@ -166,12 +170,22 @@ public class DarkTeleOp extends SuperDark {
         }
     }
 
+    boolean x2Pressed() {
+        if (!x2WasPressed && gamepad2.x) {
+            x2WasPressed = true;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     void buttonUpdate() {
         if(aWasPressed&&!gamepad1.a){aWasPressed=false;}
         if(bWasPressed&&!gamepad1.b){bWasPressed=false;}
         if(xWasPressed&&!gamepad1.x){xWasPressed=false;}
         if(yWasPressed&&!gamepad1.y){yWasPressed=false;}
         if(y2WasPressed&&!gamepad2.y){y2WasPressed=false;}
+        if(x2WasPressed&&!gamepad2.x){x2WasPressed=false;}
     }
 
 
@@ -185,6 +199,7 @@ public class DarkTeleOp extends SuperDark {
                 driveMode = DriveMode.DIAGONAL;
             }
         }
+
         void toggleServo() {
             if (foundServo.getPosition() == 1) {
                 foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
@@ -192,7 +207,16 @@ public class DarkTeleOp extends SuperDark {
                 foundServo.setPosition(1);
             }
         }
-        void togglePosition() {
+
+        void toggleArmServo() {
+            if (newArmServo.getPosition() == 1) {
+                newArmServo.setPosition(0); //~30 degrees from the 0 point - that being the top
+            } else {
+                newArmServo.setPosition(1);
+            }
+        }
+
+    void togglePosition() {
             if (positionMode == PositionMode.NORMAL) {
                 positionMode = PositionMode.TESTONE;
                 imuController.stopTracking();

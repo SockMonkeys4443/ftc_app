@@ -17,6 +17,7 @@ public abstract class SuperDark extends LinearOpMode {
 
     Drive drive = new Drive();
     OldArm arm = new OldArm();
+    Servo newArmServo; //TODO finish new arm class
     DistanceControl distance = new DistanceControl();
     Servo foundServo;
     DeadWheels deadWheels = new DeadWheels();
@@ -39,6 +40,7 @@ public abstract class SuperDark extends LinearOpMode {
         colorSensor.init(this);
 
         foundServo=hardwareMap.get(Servo.class,"foundServo");
+        newArmServo=hardwareMap.get(Servo.class, "armServo");
 
         imuController.init(hardwareMap, telemetry);
         while(!imuController.imu.isGyroCalibrated() && !isStopRequested()) {

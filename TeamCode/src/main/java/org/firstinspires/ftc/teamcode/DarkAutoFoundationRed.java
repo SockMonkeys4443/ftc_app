@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Dark Auto Foundation Red", group="working")
+@Autonomous(name="✡ Dark Auto Foundation Red", group="working")
 public class DarkAutoFoundationRed extends SuperDark {
 
     @Override
@@ -12,25 +12,7 @@ public class DarkAutoFoundationRed extends SuperDark {
 
     @Override
     public void darkRunning() {
-        /*
-        timer.restart();
-        drive.goBackwards(0.8);
-        while (opModeIsActive() && timer.check() < 1.33f && distance.cmBack() > 50) {
-            if(telemetryEnabled)
-                telemetry.addData("Distance: ",distance.cmBack()); telemetry.update();
-        } //TODO: make a method to do this part automatically.
 
-        drive.stopAll();
-        drive.goBackwards(0.3);
-        while (opModeIsActive() && timer.check() < 1.33f && distance.cmBack() > 10) {
-            if(telemetryEnabled)
-                telemetry.addData("Distance: ",distance.cmBack()); telemetry.update();
-        }
-        drive.stopAll();
-        //drive.driveDistance(DeadWheels.forward, -67.5f, 0.3, 10);
-        foundServo.setPosition(1);
-        sleep(1000);
-        */
 
         drive.driveDistance(DeadWheels.forward, -60.5f, 0.8, 2);
         foundServo.setPosition(1);
@@ -48,13 +30,13 @@ public class DarkAutoFoundationRed extends SuperDark {
         drive.stopAll();
 
 
-        drive.turn(-90,0.75);
+        drive.newTurnTo(-90,2, 8);
 
 
         foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
-        sleep(300);
+        sleep(500);
 
-        drive.newTurn(-90, 0.75);
+        drive.newTurnTo(90, 2, 8);
         //drive.turnTo(0, 0.75);
 
 
@@ -73,6 +55,7 @@ public class DarkAutoFoundationRed extends SuperDark {
         //50 to the right
         drive.driveDistance(DeadWheels.sideways, 25, 1, 3);
         //TODO: put a newTurnTo() here to get back to -180 degrees.
+        drive.newTurnTo(90, 2, 8);
         drive.driveDistance(DeadWheels.sideways, -70, 1, 6);
         drive.driveDistance(DeadWheels.forward, 15, 0.5, 2);
         stop();
