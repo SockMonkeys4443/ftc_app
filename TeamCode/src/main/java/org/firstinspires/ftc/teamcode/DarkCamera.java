@@ -38,6 +38,19 @@ public class DarkCamera {
         Image rgbImage = null;
         int rgbTries = 0;
 
+        double yellowCountL = 1;
+        double yellowCountC = 1;
+        double yellowCountR = 1;
+
+        double blackCountL = 1;
+        double blackCountC = 1;
+        double blackCountR = 1;
+
+        Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
+        VuforiaLocalizer.CloseableFrame closeableFrame = null;
+        this.vuforia.setFrameQueueCapacity(1);
+
+
         return position;
     }
 
