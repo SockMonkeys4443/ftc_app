@@ -16,7 +16,8 @@ public abstract class SuperDark extends LinearOpMode {
     public boolean telemetryEnabled = false;
 
     Drive drive = new Drive();
-    OldArm arm = new OldArm();
+    OldArm oldArm = new OldArm();
+    NewArm arm = new NewArm();
     Servo newArmServo; //TODO finish new arm class
     DistanceControl distance = new DistanceControl();
     Servo foundServo;
@@ -34,10 +35,10 @@ public abstract class SuperDark extends LinearOpMode {
 
         drive.init(this);
         deadWheels.init(hardwareMap);
+        oldArm.init(hardwareMap);
         arm.init(hardwareMap);
         distance.init(hardwareMap);
 
-        colorSensor.init(this);
 
         foundServo=hardwareMap.get(Servo.class,"foundServo");
         newArmServo=hardwareMap.get(Servo.class, "armServo");

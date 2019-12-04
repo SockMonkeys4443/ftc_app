@@ -18,7 +18,6 @@ public class DarkTeleOp extends SuperDark {
     double drivePower;
     float armSpeed = 1f;
 
-    String currentColor;
 
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
@@ -45,24 +44,7 @@ public class DarkTeleOp extends SuperDark {
             driveNormal(drivePower);
         }
 
-        //color sensor
-        if (gamepad2.dpad_down) {
-            colorSensor.toggleLED();
-        }
-        if (gamepad2.dpad_left) {
-            if (colorSensor.checkForBlack()) {
-                currentColor = "black";
-            } else if (colorSensor.checkForYellow()) {
-                currentColor = "yellow";
-            } else {
-                currentColor = "None Detected";
-            }
-            telemetry.addData("color:", currentColor);
-            colorSensor.addColorTelemetry(telemetry);
-        }
-        if (gamepad2.dpad_right) {
-            colorSensor.observeColorValues(500, telemetry);
-        }
+
 
         buttonUpdate();
 
@@ -89,7 +71,7 @@ public class DarkTeleOp extends SuperDark {
         }
 
         //arm power
-        arm.armPower(gamepad2.right_stick_y * armSpeed);
+        oldArm.armPower(gamepad2.right_stick_y * armSpeed);
 
         //telemetry
         telemetry.addData("Heading", imuController.getAngle() + " " + imuController.getAngle360());
@@ -100,19 +82,17 @@ public class DarkTeleOp extends SuperDark {
 
         //claw
         if (gamepad2.left_trigger != 0) {
-            arm.clawPower(gamepad2.left_trigger);
+            oldArm.clawPower(gamepad2.left_trigger);
         } else if (gamepad2.right_trigger != 0) {
-            arm.clawPower(-gamepad2.right_trigger);
+            oldArm.clawPower(-gamepad2.right_trigger);
         } else {
-            arm.clawPower(0);
+            oldArm.clawPower(0);
         }
 
         //imu
         imuController.updatePosition();
 
     }
-
-
 
 
 
@@ -413,7 +393,5 @@ public class DarkTeleOp extends SuperDark {
 
         return check;
     }
-
-
 
 }
