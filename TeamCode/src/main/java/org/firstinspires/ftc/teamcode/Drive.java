@@ -129,6 +129,7 @@ public class Drive {
         backRight.setPower(-power);
     }
 
+    /*
     void newTurn(float degreesToTravel, double basePower) {
 
 
@@ -179,35 +180,45 @@ public class Drive {
 
         stopAll();
     }
+     */
 
-    void newTurnVTwo(float degreesToTravel, double basePower, float seconds) {
-        //the robot will be satisfied with being within 2 degrees of the target
-        final float PRECISION_DEGREES = 3;
-        final double MIN_SPEED = .5;
-
-        Timer driveTimer = new Timer(opMode.runtime);
-        //positive is left
-        Direction direction;
-        basePower = Math.abs(basePower);
+    void newTurn(float degreesToTravel, double basePower, float seconds) {
         float startAngle = imuController.getAngle360();
-        float targetAngle = getAngle360(startAngle+degreesToTravel);
+        float targetAngle = startAngle+degreesToTravel;
+        newTurnTo(targetAngle, basePower, seconds);
+    }
 
-        driveTimer.restart();
+    /**
+     * @author Jordan
+     * @date 11-26-19
+     * @param targetAngle180 Angle between -180 and 180 that the robot should travel to
+     * @param basePower
+     * @param seconds
+     */
+    void newTurnTo(float targetAngle180, double basePower, float seconds) {
+        float startAngle = imuController.getAngle360();
+        float targetAngle = getAngle360(targetAngle180);
+        basePower = Math.abs(basePower);
 
-        while(opMode.opModeIsActive() && driveTimer.check() < seconds) {
-            ///
+        //the robot will be satisfied with being within 2 degrees of the target
+        final float PRECISION_DEGREES = 2;
+        final double MIN_SPEED = 0.2;
+
+        Timer turnTimer = new Timer(opMode.runtime);
+        turnTimer.restart();
+
+        while(opMode.opModeIsActive() && turnTimer.check()<seconds) {
             float currentAngle = imuController.getAngle360();
-            float degreesFromStart = angleDiff(startAngle,currentAngle);
-            float ratioComplete = degreesFromStart/degreesToTravel;
-            if(ratioComplete<0 || ratioComplete>1) ratioComplete=0;
-            float modifier = 1-ratioComplete; //(ratio incomplete)
+            float difference = angleDiff(currentAngle, targetAngle);
+
             double power = basePower;
 
-            if(angleDiff(currentAngle, targetAngle)<0) {
-                power=-1*basePower;
-            }
+            double modifier = (Math.abs(angleDiff(currentAngle, targetAngle))) / 90;
 
-            power = power*modifier;
+            modifier = Math.min(modifier, 1); //modifier cannot be greater than 1
+
+            if(difference>0) {power = modifier*basePower;}
+            if(difference<0) {power = modifier*-basePower;}
 
             if(power > 0) {
                 //will always make sure the power is (equal to or) above .15
@@ -224,47 +235,11 @@ public class Drive {
 
             turnLeft(power);
 
-            if(angleDiff(targetAngle,currentAngle)<PRECISION_DEGREES) {break;}
+            if(Math.abs(difference) < PRECISION_DEGREES) {break;}
 
-            if(opMode.telemetryEnabled) {
-                opMode.telemetry.addData("Current Angle: ", currentAngle);
-                opMode.telemetry.addData("Target Angle: ", targetAngle);
-                opMode.telemetry.addData("% complete?", ratioComplete*100);
-                opMode.telemetry.addData("Degrees from the start: ", degreesFromStart);
-                opMode.telemetry.update();
-            }
         }
 
         stopAll();
-    }
-
-    void newTurnTo(float targetAngle, double startPower, float seconds) {
-        float startAngle = imuController.getAngle();
-        double basePower = Math.abs(startPower);
-
-        //the robot will be satisfied with being within 2 degrees of the target
-        final float PRECISION_DEGREES = 2;
-
-        Timer turnTimer = new Timer(opMode.runtime);
-        turnTimer.restart();
-
-        while(opMode.opModeIsActive()) {
-            float currentAngle = imuController.getAngle();
-            float degreesToTarget = targetAngle-currentAngle;
-
-            //FINISH THIS TODO TODO TODO when the method andrew and jordan make for the different between two angles is done
-
-        }
-    }
-
-    /**
-     * @author Jordan
-     * @date 11-25-19
-     * @param targetAngle
-     * @param power
-     */
-    void newTurnTo(float targetAngle, double power) {
-
     }
 
 

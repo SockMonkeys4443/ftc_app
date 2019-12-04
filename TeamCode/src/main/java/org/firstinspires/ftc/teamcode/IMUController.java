@@ -61,7 +61,7 @@ public class IMUController {
      * @return The corresponding angle between 0 and 360
      */
     public static float getAngle360(float angle) {
-        angle = (float) Math.floor(angle / 360) * 360;
+        angle = angle - ((float) Math.floor(angle / 360) * 360);
         return angle;
     }
 
@@ -114,7 +114,7 @@ public class IMUController {
     public static float angleDiff(float angle1, float angle2) {
         float phi = Math.abs(angle2 - angle1) % 360;       // This is either the distance or 360 - distance
         float distance = phi > 180 ? 360 - phi : phi;
-        int sign = (angle1 - angle2 >= 0 && angle1 - angle2 <= 180) || (angle1 - angle2 <= -180 && angle1 - angle2>= -360) ? 1 : -1;
+        int sign = (angle1 - angle2 >= 0 && angle1 - angle2 <= 180) || (angle1 - angle2 <= -180 && angle1 - angle2>= -360) ? -1 : 1;
         return distance*sign;
     }
 

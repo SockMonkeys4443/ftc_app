@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 @Autonomous(name="✡ Dark Auto Foundation Blue Distance Sensor", group="working")
 public class DarkAutoFoundationBlueSensor extends SuperDark {
 
@@ -47,7 +49,7 @@ public class DarkAutoFoundationBlueSensor extends SuperDark {
         sleep(300);
 
         //TODO: add a timer failsafe of 2 seconds (maybe 3?)
-        drive.newTurn(-180, 0.75);
+        drive.newTurn(-180, 0.75, 5);
         //drive.turnTo(0, 0.75);
 
 

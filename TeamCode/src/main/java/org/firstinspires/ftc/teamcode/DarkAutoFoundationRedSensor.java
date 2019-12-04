@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 @Autonomous(name="✡ Dark Auto Foundation Red Distance Sensor", group="working")
 public class DarkAutoFoundationRedSensor extends SuperDark {
 
@@ -48,7 +50,7 @@ public class DarkAutoFoundationRedSensor extends SuperDark {
         foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
         sleep(300);
 
-        drive.newTurn(-90, 0.75);
+        drive.newTurn(-90, 0.75, 5);
         //drive.turnTo(0, 0.75);
 
 

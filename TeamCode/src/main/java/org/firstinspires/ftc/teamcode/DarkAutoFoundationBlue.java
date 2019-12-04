@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Dark Auto Foundation Blue", group="working")
+@Autonomous(name="✡ Dark Auto Foundation Blue", group="working")
 public class DarkAutoFoundationBlue extends SuperDark {
 
     @Override
@@ -41,13 +41,13 @@ public class DarkAutoFoundationBlue extends SuperDark {
 
         //sleep(300);
 
-        drive.turn(90,0.75);
+        drive.newTurnTo(90,2, 8);
 
         foundServo.setPosition(0.17);
         sleep(300);
 
         //TODO: add a timer failsafe of 2 seconds (maybe 3?)
-        drive.newTurn(-180, 0.75);
+        drive.newTurnTo(-90, 2, 8);
         //drive.turnTo(0, 0.75);
 
 
@@ -64,6 +64,7 @@ public class DarkAutoFoundationBlue extends SuperDark {
         //15 forwards
         drive.driveDistance(DeadWheels.sideways, -10, 1, 2);
         drive.driveDistance(DeadWheels.forward, 25, 1, 3);
+        drive.newTurnTo(-90, 2, 8);
         //TODO: put a newTurnTo() here to get back to -180 degrees.
         drive.driveDistance(DeadWheels.forward, -70, 1, 5);
         drive.driveDistance(DeadWheels.sideways, 15, 0.5, 2);
