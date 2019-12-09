@@ -17,7 +17,7 @@ public class DarkTeleOp extends SuperDark {
 
     double drivePower;
     float armSpeed = 1f;
-
+    boolean clawClosed = false;
 
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
@@ -71,7 +71,18 @@ public class DarkTeleOp extends SuperDark {
         }
 
         //arm power
-        oldArm.armPower(gamepad2.right_stick_y * armSpeed);
+        //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
+        arm.extendPower(gamepad2.left_stick_y * armSpeed);
+        arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+
+        //claw
+        if (gamepad2.right_bumper && !clawClosed) {
+            clawClosed = true;
+            arm.setClaw(true);
+        } else if (gamepad2.left_bumper && clawClosed) {
+            clawClosed = false;
+            arm.setClaw(false);
+        }
 
         //telemetry
         telemetry.addData("Heading", imuController.getAngle() + " " + imuController.getAngle360());
@@ -80,14 +91,15 @@ public class DarkTeleOp extends SuperDark {
         telemetry.addData("Drive Power", drivePower);
         telemetry.update();
 
-        //claw
+
+        /*// old claw
         if (gamepad2.left_trigger != 0) {
             oldArm.clawPower(gamepad2.left_trigger);
         } else if (gamepad2.right_trigger != 0) {
             oldArm.clawPower(-gamepad2.right_trigger);
         } else {
             oldArm.clawPower(0);
-        }
+        } */
 
         //imu
         imuController.updatePosition();
