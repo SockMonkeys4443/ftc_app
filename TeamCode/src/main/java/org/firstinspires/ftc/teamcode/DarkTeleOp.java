@@ -72,7 +72,7 @@ public class DarkTeleOp extends SuperDark {
 
         //arm power
         //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
-        arm.extendPower(gamepad2.left_stick_y * armSpeed);
+        arm.extendPower(-gamepad2.left_stick_y * armSpeed);
         arm.pitchPower(gamepad2.right_stick_y * armSpeed);
 
         //claw
@@ -254,7 +254,8 @@ public class DarkTeleOp extends SuperDark {
             sidePower = zeroDoubleValue(sidePower, frontPower, 0.33);
             frontPower = zeroDoubleValue(frontPower, sidePower, 0.33);
 
-
+            //TODO: fix these drive methods
+            //drive.frontRight.setPower((frontPower + sidePower) + turnPower);
 
             drive.frontLeft.setPower((frontPower + sidePower) + turnPower);
             drive.frontRight.setPower((frontPower - sidePower) - turnPower);
