@@ -52,13 +52,13 @@ public class DarkAutoFoundationBlue extends SuperDark {
 
 
         //deploy arm
-        arm.armPower(0.5f);
+        arm.pitchPower(0.5f);
         sleep(500);
-        arm.armPower(0);
+        arm.pitchPower(0);
         sleep(500);
-        arm.armPower(-0.5f);
+        arm.pitchPower(-0.5f);
         sleep(1000);
-        arm.armPower(0);
+        arm.pitchPower(0);
 
 
         //15 forwards

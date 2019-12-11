@@ -39,6 +39,8 @@ public class Drive {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -71,25 +73,31 @@ public class Drive {
         backLeft.setPower(-power);
         backRight.setPower(power);
     }
-    void goForwards(double power) {
+    void turnRight(double power) {
         frontLeft.setPower(power);
         frontRight.setPower(power);
         backLeft.setPower(power);
         backRight.setPower(power);
     }
-    void goBackwards(double power) {
+    void turnLeft(double power) {
         frontLeft.setPower(-power);
         frontRight.setPower(-power);
         backLeft.setPower(-power);
         backRight.setPower(-power);
     }
-    void turnLeft(double power) {
+    void goBackwards(double power) {
         frontLeft.setPower(-power);
         frontRight.setPower(power);
         backLeft.setPower(-power);
         backRight.setPower(power);
     }
 
+    void goForwards(double power) {
+        frontLeft.setPower(power);
+        frontRight.setPower(-power);
+        backLeft.setPower(power);
+        backRight.setPower(-power);
+    }
     //needs better names
 
 
@@ -119,14 +127,6 @@ public class Drive {
 
     void turnTo(float point, double power) {
         turn(imuController.testDirection(point), power);
-    }
-
-
-   void turnRight(double power) {
-        frontLeft.setPower(power);
-        frontRight.setPower(-power);
-        backLeft.setPower(power);
-        backRight.setPower(-power);
     }
 
     /*
