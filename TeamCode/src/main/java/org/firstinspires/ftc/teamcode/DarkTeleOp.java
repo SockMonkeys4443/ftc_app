@@ -77,10 +77,10 @@ public class DarkTeleOp extends SuperDark {
         arm.pitchPower(gamepad2.right_stick_y * armSpeed);
 
         //claw
-        if (gamepad2.right_bumper && !clawClosed) {
+        if (gamepad2.right_trigger > 0.25 && !clawClosed) {
             clawClosed = true;
             arm.setClaw(true);
-        } else if (gamepad2.left_bumper && clawClosed) {
+        } else if (gamepad2.left_trigger > 0.25 && clawClosed) {
             clawClosed = false;
             arm.setClaw(false);
         }
@@ -242,38 +242,43 @@ public class DarkTeleOp extends SuperDark {
 
         //Drive Methods
 
-        void newdriveNormal(double power) {
+        void driveNormal(double power) {
             double frontPower = gamepad1.left_stick_y * power;
             double sidePower = gamepad1.left_stick_x * power;
 
             double turnPower = gamepad1.right_stick_x * power * 0.8;
+
+            //sets side power or front power to zero if they are less than 1/3 the value of the other power
+            //this stops the robot from going at a slight angle when pushing the stick straight forward
+            sidePower = zeroDoubleValue(sidePower, frontPower, 0.3);
+            frontPower = zeroDoubleValue(frontPower, sidePower, 0.3);
+
+            drive.frontLeft.setPower(frontPower - sidePower + turnPower);
+            drive.frontRight.setPower(-frontPower + sidePower + turnPower);
+            drive.backLeft.setPower(-frontPower - sidePower + turnPower);
+            drive.backRight.setPower(frontPower - sidePower + turnPower);
+
         }
 
 
-        void driveNormal(double power){
+        void oldDriveNormal(double power){
 
-            double turnPower = -gamepad1.left_stick_y * power;
+            double frontPower = -gamepad1.left_stick_y * power;
             double sidePower = gamepad1.left_stick_x * power;
 
-            double frontPower = gamepad1.right_stick_x * power * 0.8;
+            double turnPower = gamepad1.right_stick_x * power * 0.8;
 
             //sets side power or front power to zero if they are less than 1/3 the value of the other power
             //this stops the robot from going at a slight angle when pushing the stick straight forward
             sidePower = zeroDoubleValue(sidePower, frontPower, 0.33);
             frontPower = zeroDoubleValue(frontPower, sidePower, 0.33);
 
-            //TODO: fix these drive methods
-            drive.frontRight.setPower((frontPower + sidePower) - turnPower);
-            drive.frontLeft.setPower((frontPower - sidePower) - turnPower);
-            drive.backRight.setPower((frontPower - sidePower) + turnPower);
-            drive.backLeft.setPower((frontPower + sidePower) + turnPower);
 
-            /* Old Drive Methods
             drive.frontLeft.setPower((frontPower + sidePower) + turnPower);
             drive.frontRight.setPower((frontPower - sidePower) - turnPower);
             drive.backLeft.setPower((frontPower - sidePower) + turnPower);
             drive.backRight.setPower((frontPower + sidePower) - turnPower);
-               */
+
 
             telemetry.addData("frontPower", frontPower);
             telemetry.addData("sidePower", sidePower);
