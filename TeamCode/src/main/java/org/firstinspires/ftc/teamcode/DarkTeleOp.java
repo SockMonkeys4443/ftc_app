@@ -67,7 +67,7 @@ public class DarkTeleOp extends SuperDark {
             toggleArmSpeed();
         }
         if (x2Pressed()) {
-            toggleArmServo();
+            arm.toggleClaw();
         }
 
         //arm power
@@ -197,14 +197,6 @@ public class DarkTeleOp extends SuperDark {
                 foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
             } else {
                 foundServo.setPosition(1);
-            }
-        }
-
-        void toggleArmServo() {
-            if (newArmServo.getPosition() == 1) {
-                newArmServo.setPosition(0); //~30 degrees from the 0 point - that being the top
-            } else {
-                newArmServo.setPosition(1);
             }
         }
 
