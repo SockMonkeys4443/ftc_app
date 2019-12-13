@@ -77,10 +77,10 @@ public class DarkTeleOp extends SuperDark {
         arm.pitchPower(gamepad2.right_stick_y * armSpeed);
 
         //claw
-        if (gamepad2.right_trigger > 0.25 && !clawClosed) {
+        if (gamepad2.left_trigger > 0.25 && !clawClosed) {
             clawClosed = true;
             arm.setClaw(true);
-        } else if (gamepad2.left_trigger > 0.25 && clawClosed) {
+        } else if (gamepad2.right_trigger > 0.25 && clawClosed) {
             clawClosed = false;
             arm.setClaw(false);
         }
@@ -246,7 +246,7 @@ public class DarkTeleOp extends SuperDark {
             frontPower = zeroDoubleValue(frontPower, sidePower, 0.3);
 
             drive.frontLeft.setPower(frontPower - sidePower + turnPower);
-            drive.frontRight.setPower(-frontPower + sidePower + turnPower);
+            drive.frontRight.setPower(-frontPower - sidePower + turnPower);
             drive.backLeft.setPower(-frontPower - sidePower + turnPower);
             drive.backRight.setPower(frontPower - sidePower + turnPower);
 
