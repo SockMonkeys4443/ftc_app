@@ -22,7 +22,7 @@ public class DarkTeleOp extends SuperDark {
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
 
-    DriveMode driveMode = DriveMode.DIAGONAL;
+    DriveMode driveMode = DriveMode.NORMAL;
     PositionMode positionMode = PositionMode.NORMAL;
 
     @Override
@@ -49,9 +49,10 @@ public class DarkTeleOp extends SuperDark {
         buttonUpdate();
 
         //buttons
-        if (yPressed()) {
+
+        /*if (yPressed()) {
             toggleDrive();
-        }
+        } */
 
         if (bPressed()) {
             toggleServo();
@@ -240,6 +241,13 @@ public class DarkTeleOp extends SuperDark {
 
 
         //Drive Methods
+
+        void newdriveNormal(double power) {
+            double frontPower = gamepad1.left_stick_y * power;
+            double sidePower = gamepad1.left_stick_x * power;
+
+            double turnPower = gamepad1.right_stick_x * power * 0.8;
+        }
 
 
         void driveNormal(double power){
