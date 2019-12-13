@@ -21,8 +21,11 @@ public class DarkTeleOp extends SuperDark {
 
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
+    enum RobotFront {ARM, GRABBER, BACKARM, PHONE}
+
 
     DriveMode driveMode = DriveMode.NORMAL;
+    RobotFront robotFront = RobotFront.ARM;
     PositionMode positionMode = PositionMode.NORMAL;
 
     @Override
@@ -50,9 +53,9 @@ public class DarkTeleOp extends SuperDark {
 
         //buttons
 
-        /*if (yPressed()) {
-            toggleDrive();
-        } */
+        if (yPressed()) {
+            toggleFront();
+        }
 
         if (bPressed()) {
             toggleServo();
@@ -183,6 +186,13 @@ public class DarkTeleOp extends SuperDark {
 
 
         //toggles
+        void toggleFront() {
+        if (robotFront == RobotFront.ARM) {
+            robotFront = RobotFront.GRABBER;
+        } else {
+            robotFront = RobotFront.ARM;
+        }
+    }
         void toggleDrive() {
             if (driveMode == DriveMode.DIAGONAL) {
                 driveMode = DriveMode.NORMAL;
@@ -235,7 +245,7 @@ public class DarkTeleOp extends SuperDark {
         //Drive Methods
 
         void driveNormal(double power) {
-            double frontPower = gamepad1.left_stick_y * power;
+            double frontPower = -gamepad1.left_stick_y * power;
             double sidePower = gamepad1.left_stick_x * power;
 
             double turnPower = gamepad1.right_stick_x * power * 0.8;
@@ -245,11 +255,17 @@ public class DarkTeleOp extends SuperDark {
             sidePower = zeroDoubleValue(sidePower, frontPower, 0.3);
             frontPower = zeroDoubleValue(frontPower, sidePower, 0.3);
 
-            drive.frontLeft.setPower(frontPower - sidePower + turnPower);
-            drive.frontRight.setPower(-frontPower - sidePower + turnPower);
-            drive.backLeft.setPower(-frontPower - sidePower + turnPower);
-            drive.backRight.setPower(frontPower - sidePower + turnPower);
-
+            if (robotFront == RobotFront.ARM) {
+                drive.frontLeft.setPower(frontPower - sidePower + turnPower);
+                drive.frontRight.setPower(-frontPower + sidePower + turnPower);
+                drive.backLeft.setPower(-frontPower - sidePower + turnPower);
+                drive.backRight.setPower(frontPower + sidePower + turnPower);
+            } else if (robotFront == RobotFront.GRABBER) {
+                drive.frontLeft.setPower(frontPower - sidePower + turnPower);
+                drive.frontRight.setPower(-frontPower + sidePower + turnPower);
+                drive.backLeft.setPower(-frontPower - sidePower + turnPower);
+                drive.backRight.setPower(frontPower + sidePower + turnPower);
+            }
         }
 
 
