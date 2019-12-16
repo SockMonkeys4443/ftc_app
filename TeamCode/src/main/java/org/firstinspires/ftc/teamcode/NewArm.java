@@ -10,6 +10,7 @@ public class NewArm {
     DcMotor extendMotor = null;
     Servo grabServo = null;
 
+
     void init(HardwareMap hardwareMap) {
         pitchMotor = hardwareMap.get(DcMotor.class, "pitchMotor");
             //if(pitchMotor==null) {pitchMotor = hardwareMap.get(DcMotor.class, "armMotor");}
@@ -20,7 +21,11 @@ public class NewArm {
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pitchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+
 
     void pitchPower(float power) {
         pitchMotor.setPower(power);
@@ -42,5 +47,9 @@ public class NewArm {
 
     void stopPitch() {
         pitchMotor.setPower(0);
+    }
+
+    int getPitchPosition() {
+        return pitchMotor.getCurrentPosition();
     }
 }

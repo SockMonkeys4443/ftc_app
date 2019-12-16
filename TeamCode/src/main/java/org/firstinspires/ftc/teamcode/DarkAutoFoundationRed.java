@@ -14,7 +14,7 @@ public class DarkAutoFoundationRed extends SuperDark {
     public void darkRunning() {
 
 
-        drive.driveDistance(DeadWheels.forward, -60.5f, 0.7, 2);
+        drive.driveDistance(DeadWheels.forward, -65.0f, 0.7, 2.25f);
         foundServo.setPosition(1);
         sleep(1000);
 

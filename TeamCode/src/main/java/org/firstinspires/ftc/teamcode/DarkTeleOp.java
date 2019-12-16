@@ -82,10 +82,10 @@ public class DarkTeleOp extends SuperDark {
         //claw
         if (gamepad2.left_trigger > 0.25 && !clawClosed) {
             clawClosed = true;
-            arm.setClaw(true);
+            arm.grabServo.setPosition(0.6);
         } else if (gamepad2.right_trigger > 0.25 && clawClosed) {
             clawClosed = false;
-            arm.setClaw(false);
+            arm.grabServo.setPosition(0);
         }
 
         //telemetry
@@ -261,10 +261,10 @@ public class DarkTeleOp extends SuperDark {
                 drive.backLeft.setPower(-frontPower - sidePower + turnPower);
                 drive.backRight.setPower(frontPower + sidePower + turnPower);
             } else if (robotFront == RobotFront.GRABBER) {
-                drive.frontLeft.setPower(frontPower - sidePower + turnPower);
-                drive.frontRight.setPower(-frontPower + sidePower + turnPower);
-                drive.backLeft.setPower(-frontPower - sidePower + turnPower);
-                drive.backRight.setPower(frontPower + sidePower + turnPower);
+                drive.frontLeft.setPower(-frontPower - sidePower + turnPower);
+                drive.frontRight.setPower(frontPower + sidePower + turnPower);
+                drive.backLeft.setPower(-frontPower + sidePower + turnPower);
+                drive.backRight.setPower(frontPower - sidePower + turnPower);
             }
         }
 
