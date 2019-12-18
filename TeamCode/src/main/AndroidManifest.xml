@@ -5,14 +5,23 @@
      So it won't ultimately be as empty as it might here appear to be :-) -->
 
 <!-- The package name here determines the package for your R class and your BuildConfig class -->
+
 <manifest
+
     package="org.firstinspires.ftc.teamcode"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+
+
     <application/>
 
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-    </intent-filter>
+
 
 </manifest>
