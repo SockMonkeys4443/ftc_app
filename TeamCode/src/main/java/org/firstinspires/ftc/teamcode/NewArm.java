@@ -5,10 +5,16 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
+
 public class NewArm {
     DcMotor pitchMotor = null;
     DcMotor extendMotor = null;
     Servo grabServo = null;
+    SensorDigitalTouch armLimit;
+    SensorDigitalTouch clawLimit;
+
+
 
 
     void init(HardwareMap hardwareMap) {
@@ -21,11 +27,13 @@ public class NewArm {
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        pitchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        reset();
     }
 
-
+    void reset() {
+        pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
     void pitchPower(float power) {
         pitchMotor.setPower(power);
@@ -51,5 +59,21 @@ public class NewArm {
 
     int getPitchPosition() {
         return pitchMotor.getCurrentPosition();
+    }
+
+    void goToAngle(float angle) {
+        angle = Math.max(90, angle);
+        angle = Math.min(0, angle);
+
+        int anglePos = (int) ((9 * 280) * (angle / 360));
+        pitchMotor.setTargetPosition(anglePos);
+
+        pitchMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    void updateMode() {
+        if (pitchMotor.getMode() == DcMotor.RunMode.RUN_TO_POSITION && pitchMotor.getCurrentPosition() != pitchMotor.getTargetPosition()) {
+            pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
     }
 }
