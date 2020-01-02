@@ -71,13 +71,15 @@ public class DarkTeleOp extends SuperDark {
             toggleArmSpeed();
         }
         if (x2Pressed()) {
-            arm.toggleClaw();
+            arm.goToAngle(45);
         }
 
         //arm power
         //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
         arm.extendPower(-gamepad2.left_stick_y * armSpeed);
         arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+
+        arm.updateClawRotation();
 
         //claw
         if (gamepad2.left_trigger > 0.25 && !clawClosed) {
@@ -107,6 +109,8 @@ public class DarkTeleOp extends SuperDark {
 
         //imu
         imuController.updatePosition();
+
+        arm.updateMode();
 
     }
 
