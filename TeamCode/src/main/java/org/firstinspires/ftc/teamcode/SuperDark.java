@@ -17,11 +17,12 @@ public abstract class SuperDark extends LinearOpMode {
 
     Drive drive = new Drive();
     NewArm arm = new NewArm();
-    Servo newArmServo; //TODO finish new arm class
     DistanceControl distance = new DistanceControl();
     Servo foundServo;
     DeadWheels deadWheels = new DeadWheels();
     DarkColorSensor colorSensor = new DarkColorSensor();
+
+    DarkCamera camera = new DarkCamera();
 
     IMUController imuController = new IMUController();
     public ElapsedTime runtime = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
@@ -64,6 +65,10 @@ public abstract class SuperDark extends LinearOpMode {
             darkRunning();
         }
 
+    }
+
+    void initCamera() {
+        camera.initVuforia(this);
     }
 
     abstract public void darkInit();

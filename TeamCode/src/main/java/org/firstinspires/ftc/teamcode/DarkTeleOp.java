@@ -79,7 +79,7 @@ public class DarkTeleOp extends SuperDark {
         arm.extendPower(-gamepad2.left_stick_y * armSpeed);
         arm.pitchPower(gamepad2.right_stick_y * armSpeed);
 
-        arm.updateClawRotation();
+        arm.positionServoPower(gamepad2.right_stick_y);
 
         //claw
         if (gamepad2.left_trigger > 0.25 && !clawClosed) {
@@ -95,6 +95,7 @@ public class DarkTeleOp extends SuperDark {
         telemetry.addData("HeadingA:", imuController.getAngle360());
         telemetry.addData("driveMode", driveMode);
         telemetry.addData("Drive Power", drivePower);
+        telemetry.addData("arm angle:", arm.getPitchAngle() + " arm position:" + arm.getPitchPosition());
         telemetry.update();
 
 

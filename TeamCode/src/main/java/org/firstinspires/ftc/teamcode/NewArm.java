@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 
@@ -11,7 +12,7 @@ public class NewArm {
     DcMotor pitchMotor = null;
     DcMotor extendMotor = null;
     Servo grabServo = null;
-    Servo positionServo = null;
+    CRServo positionServo = null;
     SensorDigitalTouch armLimit;
     SensorDigitalTouch clawLimit;
 
@@ -24,8 +25,8 @@ public class NewArm {
         extendMotor = hardwareMap.get(DcMotor.class, "extendMotor");
             //if(extendMotor==null) {extendMotor = hardwareMap.get(DcMotor.class, "clawMotor");}
         grabServo = hardwareMap.get(Servo.class, "grabServo");
-        positionServo = hardwareMap.get(Servo.class, "positionServo");
-        pitchMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        positionServo = hardwareMap.get(CRServo.class, "positionServo");
+        //pitchMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -59,6 +60,8 @@ public class NewArm {
         pitchMotor.setPower(0);
     }
 
+    void positionServoPower(float power) { positionServo.setPower(power);}
+
     int getPitchPosition() {
         return pitchMotor.getCurrentPosition();
     }
@@ -67,7 +70,8 @@ public class NewArm {
         angle = Math.max(80, angle);
         angle = Math.min(-15, angle);
 
-        int anglePos = (int) ((9 * 280) * (angle / 360));
+        int anglePos = Math.round( ((9 * 1440) * (angle / 360)) );
+
         pitchMotor.setTargetPosition(anglePos);
 
         pitchMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -79,7 +83,14 @@ public class NewArm {
         }
     }
 
+    int getPitchAngle() {
+        return ( pitchMotor.getCurrentPosition() / (9 * 1440) ) * 360;
+    }
+
+    /*
     void updateClawRotation() {
         positionServo.setPosition((int) ((9 * 280) * (pitchMotor.getCurrentPosition() / 360)));
     }
+    */
+
 }

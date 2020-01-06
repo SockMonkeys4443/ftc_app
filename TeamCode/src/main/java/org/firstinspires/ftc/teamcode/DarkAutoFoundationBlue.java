@@ -24,7 +24,7 @@ public class DarkAutoFoundationBlue extends SuperDark {
         sleep(1000);
                 */
 
-        drive.driveDistance(DeadWheels.forward, -65.0f, 0.7, 2.25f);
+        drive.driveDistance(DeadWheels.forward, -68.0f, 0.7, 2.25f);
         foundServo.setPosition(1);
         sleep(1000);
 
@@ -44,6 +44,8 @@ public class DarkAutoFoundationBlue extends SuperDark {
         drive.newTurnTo(90,1, 8);
 
         foundServo.setPosition(0.17);
+        //wiggle to let go of the servo
+        drive.newTurnTo(-90 ,1, 2);
         sleep(1000);
 
         drive.newTurnTo(-90, 1, 8);
