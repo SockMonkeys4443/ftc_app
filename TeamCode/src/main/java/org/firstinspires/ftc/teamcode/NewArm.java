@@ -13,8 +13,8 @@ public class NewArm {
     DcMotor extendMotor = null;
     Servo grabServo = null;
     CRServo positionServo = null;
-    SensorDigitalTouch armLimit;
-    SensorDigitalTouch clawLimit;
+    SensorDigitalTouch pitchLimit;
+    SensorDigitalTouch extendLimit;
 
 
 
@@ -29,8 +29,8 @@ public class NewArm {
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        armLimit = hardwareMap.get(SensorDigitalTouch.class, "armLimit");
-        clawLimit = hardwareMap.get(SensorDigitalTouch.class, "clawLimit");
+        pitchLimit = hardwareMap.get(SensorDigitalTouch.class, "pitchLimit");
+        extendLimit = hardwareMap.get(SensorDigitalTouch.class, "extendLimit");
 
         reset();
     }
@@ -95,8 +95,14 @@ public class NewArm {
     }
     */
 
-    void gotoGrabLocation() {
+    void gotoGrabLocation(boolean active) {
+        if (active) {
+            if (pitchLimit.) {
 
+            } else {
+
+            }
+        }
     }
 
 }
