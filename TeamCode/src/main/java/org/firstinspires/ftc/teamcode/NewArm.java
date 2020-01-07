@@ -102,7 +102,10 @@ public class NewArm {
     void gotoGrabLocation(boolean active) {
         if (active) {
             if (pitchLimit.getState()) {
-                if (!extendLimit.getState()) {
+                pitchPower(0);
+                if (extendLimit.getState()) {
+                    extendPower(0);
+                } else {
                     extendPower(0.5f);
                 }
             } else {
