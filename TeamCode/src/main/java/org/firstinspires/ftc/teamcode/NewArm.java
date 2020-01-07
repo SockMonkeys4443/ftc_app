@@ -18,7 +18,6 @@ public class NewArm {
 
 
 
-
     void init(HardwareMap hardwareMap) {
         pitchMotor = hardwareMap.get(DcMotor.class, "pitchMotor");
             //if(pitchMotor==null) {pitchMotor = hardwareMap.get(DcMotor.class, "armMotor");}
@@ -29,6 +28,9 @@ public class NewArm {
         //pitchMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        armLimit = hardwareMap.get(SensorDigitalTouch.class, "armLimit");
+        clawLimit = hardwareMap.get(SensorDigitalTouch.class, "clawLimit");
 
         reset();
     }
@@ -92,5 +94,9 @@ public class NewArm {
         positionServo.setPosition((int) ((9 * 280) * (pitchMotor.getCurrentPosition() / 360)));
     }
     */
+
+    void gotoGrabLocation() {
+
+    }
 
 }
