@@ -79,8 +79,7 @@ public class DarkTeleOp extends SuperDark {
         arm.extendPower(-gamepad2.left_stick_y * armSpeed);
         arm.pitchPower(gamepad2.right_stick_y * armSpeed);
 
-        arm.positionServoPower(gamepad2.right_stick_y * armSpeed / 9
-        );
+        arm.positionServoPower(gamepad2.right_stick_y * armSpeed / 200);
 
         //claw
         if (gamepad2.left_trigger > 0.25 && !clawClosed) {
