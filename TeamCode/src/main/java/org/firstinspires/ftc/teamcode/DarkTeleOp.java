@@ -112,6 +112,7 @@ public class DarkTeleOp extends SuperDark {
         imuController.updatePosition();
 
         arm.updateMode();
+        arm.gotoGrabLocation(gamepad2.a);
 
     }
 

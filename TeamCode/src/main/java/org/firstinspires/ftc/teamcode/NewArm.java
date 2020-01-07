@@ -2,19 +2,20 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 
 public class NewArm {
     DcMotor pitchMotor = null;
     DcMotor extendMotor = null;
     Servo grabServo = null;
     CRServo positionServo = null;
-    SensorDigitalTouch pitchLimit;
-    SensorDigitalTouch extendLimit;
+
+    DigitalChannel pitchLimit;
+    DigitalChannel extendLimit;
 
 
 
@@ -29,8 +30,11 @@ public class NewArm {
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        pitchLimit = hardwareMap.get(SensorDigitalTouch.class, "pitchLimit");
-        extendLimit = hardwareMap.get(SensorDigitalTouch.class, "extendLimit");
+        pitchLimit = hardwareMap.get(DigitalChannel.class, "pitchLimit");
+        extendLimit = hardwareMap.get(DigitalChannel.class, "extendLimit");
+
+        pitchLimit.setMode(DigitalChannel.Mode.INPUT);
+        extendLimit.setMode(DigitalChannel.Mode.INPUT);
 
         reset();
     }
@@ -97,10 +101,12 @@ public class NewArm {
 
     void gotoGrabLocation(boolean active) {
         if (active) {
-            if (pitchLimit.) {
-
+            if (pitchLimit.getState()) {
+                if (!extendLimit.getState()) {
+                    extendPower(0.5f);
+                }
             } else {
-
+                pitchPower(-0.5f);
             }
         }
     }
