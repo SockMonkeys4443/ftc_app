@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -13,8 +14,8 @@ public class NewArm {
     DcMotor extendMotor = null;
     Servo grabServo = null;
     CRServo positionServo = null;
-    SensorDigitalTouch armLimit;
-    SensorDigitalTouch clawLimit;
+    DigitalChannel armLimit;
+    DigitalChannel clawLimit;
 
 
 
@@ -29,8 +30,9 @@ public class NewArm {
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        armLimit = hardwareMap.get(SensorDigitalTouch.class, "armLimit");
-        clawLimit = hardwareMap.get(SensorDigitalTouch.class, "clawLimit");
+        armLimit = hardwareMap.get(DigitalChannel.class, "armLimit");
+        clawLimit = hardwareMap.get(DigitalChannel.class, "clawLimit");
+
 
         reset();
     }
