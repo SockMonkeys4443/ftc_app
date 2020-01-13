@@ -64,29 +64,125 @@ public class DarkCamera {
         circuitBreakers = new CircuitBreakersVuforia(vuforia);
     }
 
-    public SkystonePosition ScanSkystones() {
-        SkystonePosition position = null;
-        Image rgbImage = null;
-        int rgbTries = 0;
+    public CircuitBreakersVuforia.skystonePos circuitScan() {
+        return circuitBreakers.vuforiascan(false, false);
+    }
 
-        double yellowCountL = 1;
-        double yellowCountC = 1;
-        double yellowCountR = 1;
+    public enum StoneLocation {
+        LEFT, RIGHT
+    }
 
-        double blackCountL = 1;
-        double blackCountC = 1;
-        double blackCountR = 1;
+    public StoneLocation scanTwoStones() {
+        Image image = null;
+
+        StoneLocation result = StoneLocation.LEFT; //just the default
+
+        double yellowCountLeft = 0, yellowCountRight = 0;
+        double blackCountLeft = 0, blackCountRight = 0;
 
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true);
         VuforiaLocalizer.CloseableFrame closeableFrame = null;
         this.vuforia.setFrameQueueCapacity(1);
 
+        //acquire the image
+        while (image == null) {
+            try {
+                closeableFrame = this.vuforia.getFrameQueue().take();
+                long numImages = closeableFrame.getNumImages();
 
-        return position;
-    }
+                for (int i = 0; i < numImages; i++) {
+                    if (closeableFrame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                        image = closeableFrame.getImage(i);
+                        if (image != null) {
+                            break;
+                        }
+                    }
+                }
+            } catch (InterruptedException exc) {
 
-    public CircuitBreakersVuforia.skystonePos circuitScan() {
-        return circuitBreakers.vuforiascan(false, false);
+            } finally {
+                if (closeableFrame != null) closeableFrame.close();
+            }
+        }
+        //done acquiring the image
+
+        // copy the bitmap from the Vuforia frame
+        Bitmap bitmap = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.RGB_565);
+        bitmap.copyPixelsFromBuffer(image.getPixels());
+
+        String path = Environment.getExternalStorageDirectory().toString();
+        FileOutputStream out = null;
+
+        String bitmapName;
+        String croppedBitmapName;
+
+        bitmapName = "Bitmap.png";
+        croppedBitmapName = "BitmapCropped.png";
+
+        //Todo: these numbers should be changed to fit where we see the stones at.
+        int cropStartX = (int) ((370.0 / 1280.0) * bitmap.getWidth());
+        int cropStartY = (int) ((130.0 / 720.0) * bitmap.getHeight());
+        int cropWidth = (int) ((890.0 / 1280.0) * bitmap.getWidth());
+        int cropHeight = (int) ((165.0 / 720.0) * bitmap.getHeight());
+
+        //REMOVE THIS LATER, saves a picture of the stones
+        if (true) {
+            try {
+                File file = new File(path, croppedBitmapName);
+                out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (out != null) {
+                        out.flush();
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        bitmap = createBitmap(bitmap, cropStartX, cropStartY, cropWidth, cropHeight); //Cropped Bitmap to show only stones
+
+
+        int height;
+        int width;
+        int pixel;
+        int bitmapWidth = bitmap.getWidth();
+        int bitmapHeight = bitmap.getHeight();
+
+        for (height = 0; height < bitmapHeight; ++height) {
+            for (width = 0; width < bitmapWidth; ++width) {
+                pixel = bitmap.getPixel(width, height);
+                if (Color.red(pixel) < 200 || Color.green(pixel) < 200 || Color.blue(pixel) < 200) {
+                    if(width < bitmapWidth/2) {
+                        yellowCountLeft += Color.red(pixel);
+                        blackCountLeft += Color.blue(pixel);
+                    } else {
+                        yellowCountRight += Color.red(pixel);
+                        blackCountRight += Color.blue(pixel);
+                    } //right side
+
+                }
+            }
+        }
+
+        double blackYellowRatioLeft = blackCountLeft / yellowCountLeft;
+        double blackYellowRatioRight = blackCountRight / yellowCountRight;
+
+        //higher black ratio over yellow means a likely black stone
+        if (blackYellowRatioRight > blackYellowRatioLeft) {
+            result = StoneLocation.RIGHT;
+        } else
+        {
+            result = StoneLocation.LEFT;
+        }
+
+        return result;
     }
 
 }

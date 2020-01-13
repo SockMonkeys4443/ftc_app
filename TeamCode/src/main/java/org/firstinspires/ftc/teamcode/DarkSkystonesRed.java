@@ -13,8 +13,17 @@ public class DarkSkystonesRed extends SuperDark {
 
     @Override
     public void darkRunning() {
-        telemetry.addData("Skystone position:", camera.circuitScan());
-        telemetry.update();
-        //
+        timer.restart();
+
+        //there are 29 inches between where the closest edge of the robot starts to the stones
+
+        //drive to where all 3 stones fit into view
+        DarkCamera.StoneLocation skystonePosition;
+
+        skystonePosition = camera.scanTwoStones();
+        telemetry.addData("Skystone position:", skystonePosition );
+
+        sleep(8000); //time to read telemetry
+
     }
 }

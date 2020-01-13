@@ -30,6 +30,7 @@ public class DarkAutoFoundationRed extends SuperDark {
         drive.stopAll();
 
 
+
         drive.newTurnTo(-90,1, 8);
 
 
