@@ -20,10 +20,16 @@ public class DarkSkystonesRed extends SuperDark {
         //drive to where all 3 stones fit into view
         DarkCamera.StoneLocation skystonePosition;
 
-        skystonePosition = camera.scanTwoStones();
+        skystonePosition = camera.scanTwoStones(false);
         telemetry.addData("Skystone position:", skystonePosition );
+        telemetry.update();
 
-        sleep(8000); //time to read telemetry
+        while(opModeIsActive()) {
+            skystonePosition = camera.scanTwoStones(false);
+            telemetry.addData("Skystone position:", skystonePosition );
+            telemetry.update();
+        }
+
 
     }
 }
