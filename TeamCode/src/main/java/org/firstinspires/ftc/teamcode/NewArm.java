@@ -30,11 +30,15 @@ public class NewArm {
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        extendMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         pitchLimit = hardwareMap.get(DigitalChannel.class, "pitchLimit");
         extendLimit = hardwareMap.get(DigitalChannel.class, "extendLimit");
 
         pitchLimit.setMode(DigitalChannel.Mode.INPUT);
         extendLimit.setMode(DigitalChannel.Mode.INPUT);
+        pitchLimit.setState(false);
+        pitchLimit.setState(false);
 
         reset();
     }
@@ -91,6 +95,14 @@ public class NewArm {
 
     int getPitchAngle() {
         return ( pitchMotor.getCurrentPosition() / (9 * 1440) ) * 360;
+    }
+
+    boolean extendState() {
+        return extendLimit.getState();
+    }
+
+    boolean pitchState() {
+        return pitchLimit.getState();
     }
 
     /*

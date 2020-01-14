@@ -12,6 +12,7 @@ public class DarkAutoFoundationRed extends SuperDark {
 
     @Override
     public void darkRunning() {
+        //TODO: In the future we need to comment what the auto is doing
 
 
         drive.driveDistance(DeadWheels.forward, -68.0f, 0.7, 2.25f);
@@ -29,6 +30,10 @@ public class DarkAutoFoundationRed extends SuperDark {
         sleep(1000);
         drive.stopAll();
 
+        drive.driveDistance(DeadWheels.forward, 25.0f, 0.7, 2.25f);
+        sleep(500);
+        drive.stopAll();
+
 
         drive.newTurnTo(-90,1, 8);
 
@@ -43,7 +48,7 @@ public class DarkAutoFoundationRed extends SuperDark {
         drive.driveDistance(DeadWheels.sideways, 10, 1, 2);
         drive.driveDistance(DeadWheels.forward, 25, 1, 3);
         drive.newTurnTo(90, 1, 8);
-        drive.driveDistance(DeadWheels.forward, -70, 1, 5);
+        drive.driveDistance(DeadWheels.forward, -85, 1, 5);
         drive.driveDistance(DeadWheels.sideways, -15, 0.5, 2);
         stop();
 
