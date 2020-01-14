@@ -53,8 +53,9 @@ public class DarkAutoFoundationBlue extends SuperDark {
         drive.driveDistance(DeadWheels.sideways, -10, 1, 2);
         drive.driveDistance(DeadWheels.forward, 25, 1, 3);
         drive.newTurnTo(-90, 1, 8);
-        drive.driveDistance(DeadWheels.forward, -70, 1, 5);
+        drive.driveDistance(DeadWheels.forward, -80, 1, 5);
         drive.driveDistance(DeadWheels.sideways, 15, 0.5, 2);
         stop();
     }
 }
+//your mom

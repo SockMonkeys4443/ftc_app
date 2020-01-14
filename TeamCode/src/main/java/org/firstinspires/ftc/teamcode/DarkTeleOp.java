@@ -61,9 +61,10 @@ public class DarkTeleOp extends SuperDark {
             toggleServo();
         }
 
+        /*
         if (xPressed()) {
             togglePosition();
-        }
+        } */
         if (aPressed()) {
             toggleSpeed();
         }
@@ -76,10 +77,25 @@ public class DarkTeleOp extends SuperDark {
 
         //arm power
         //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
-        arm.extendPower(-gamepad2.left_stick_y * armSpeed);
-        arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+        if (a2Pressed()) {
+            if (!arm.extendState()) {
+                arm.extendPower(-gamepad2.left_stick_y * armSpeed);
+            }
+            if (!arm.pitchState()) {
+                arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+            }
+        } else {
+            arm.extendPower(-gamepad2.left_stick_y * armSpeed);
+            arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+        }
 
-        arm.positionServoPower(gamepad2.right_stick_y * armSpeed / 200);
+        if (gamepad2.dpad_up) {
+            arm.positionServoPower(-0.08f);
+        } else if (gamepad2.dpad_down) {
+            arm.positionServoPower(0.08f);
+        } else {
+            arm.positionServoPower(gamepad2.right_stick_y * armSpeed / 50);
+        }
 
         //claw
         if (gamepad2.left_trigger > 0.25 && !clawClosed) {
@@ -109,10 +125,9 @@ public class DarkTeleOp extends SuperDark {
         } */
 
         //imu
-        imuController.updatePosition();
+        //imuController.updatePosition();
 
         arm.updateMode();
-        arm.gotoGrabLocation(gamepad2.a);
 
     }
 
@@ -125,6 +140,7 @@ public class DarkTeleOp extends SuperDark {
     boolean yWasPressed;
     boolean y2WasPressed;
     boolean x2WasPressed;
+    boolean a2WasPressed;
 
     boolean aPressed() {
         if (!aWasPressed && gamepad1.a) {
@@ -181,6 +197,15 @@ public class DarkTeleOp extends SuperDark {
         }
     }
 
+    boolean a2Pressed() {
+        if (!a2WasPressed && gamepad2.a) {
+            a2WasPressed = true;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     void buttonUpdate() {
         if(aWasPressed&&!gamepad1.a){aWasPressed=false;}
         if(bWasPressed&&!gamepad1.b){bWasPressed=false;}
@@ -188,6 +213,7 @@ public class DarkTeleOp extends SuperDark {
         if(yWasPressed&&!gamepad1.y){yWasPressed=false;}
         if(y2WasPressed&&!gamepad2.y){y2WasPressed=false;}
         if(x2WasPressed&&!gamepad2.x){x2WasPressed=false;}
+        if(a2WasPressed&&!gamepad2.a){a2WasPressed=false;}
     }
 
 
@@ -217,6 +243,7 @@ public class DarkTeleOp extends SuperDark {
             }
         }
 
+        /*
     void togglePosition() {
             if (positionMode == PositionMode.NORMAL) {
                 positionMode = PositionMode.TESTONE;
@@ -229,7 +256,7 @@ public class DarkTeleOp extends SuperDark {
             } else {
                 positionMode = PositionMode.NORMAL;
                 imuController.stopTracking();
-            }
+            } */
         }
         void toggleSpeed() {
             if (drivePower == 1) {
