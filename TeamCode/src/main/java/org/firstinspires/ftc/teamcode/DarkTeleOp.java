@@ -72,7 +72,7 @@ public class DarkTeleOp extends SuperDark {
             toggleArmSpeed();
         }
         if (x2Pressed()) {
-            arm.goToAngle(45);
+            arm.goToAngle(45, 1);
         }
 
         //arm power

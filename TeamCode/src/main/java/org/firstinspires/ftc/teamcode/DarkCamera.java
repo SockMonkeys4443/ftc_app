@@ -64,15 +64,15 @@ public class DarkCamera {
         circuitBreakers = new CircuitBreakersVuforia(vuforia);
     }
 
-    public CircuitBreakersVuforia.skystonePos circuitScan() {
-        return circuitBreakers.vuforiascan(false, false);
+    public CircuitBreakersVuforia.skystonePos circuitScan(boolean save) {
+        return circuitBreakers.vuforiascan(save, false);
     }
 
     public enum StoneLocation {
         LEFT, RIGHT
     }
 
-    public StoneLocation scanTwoStones() {
+    public StoneLocation scanTwoStones(boolean saveImages) {
         Image image = null;
 
         StoneLocation result = StoneLocation.LEFT; //just the default
@@ -126,7 +126,7 @@ public class DarkCamera {
         int cropHeight = (int) ((165.0 / 720.0) * bitmap.getHeight());
 
         //REMOVE THIS LATER, saves a picture of the stones
-        if (true) {
+        if (saveImages) {
             try {
                 File file = new File(path, croppedBitmapName);
                 out = new FileOutputStream(file);
