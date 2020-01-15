@@ -17,9 +17,11 @@ public class NewArm {
     DigitalChannel pitchLimit;
     DigitalChannel extendLimit;
 
+    SuperDark opMode;
 
-
-    void init(HardwareMap hardwareMap) {
+    void init(SuperDark parentOpMode) {
+        this.opMode = parentOpMode;
+        HardwareMap hardwareMap = opMode.hardwareMap;
         pitchMotor = hardwareMap.get(DcMotor.class, "pitchMotor");
             //if(pitchMotor==null) {pitchMotor = hardwareMap.get(DcMotor.class, "armMotor");}
         extendMotor = hardwareMap.get(DcMotor.class, "extendMotor");
@@ -76,7 +78,7 @@ public class NewArm {
         return pitchMotor.getCurrentPosition();
     }
 
-    void goToAngle(float angle) {
+    void goToAngle(float angle, double power) {
         angle = Math.max(80, angle);
         angle = Math.min(-15, angle);
 
@@ -85,6 +87,10 @@ public class NewArm {
         pitchMotor.setTargetPosition(anglePos);
 
         pitchMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        pitchMotor.setPower(power);
+        while(pitchMotor.isBusy()); //wait
+        pitchMotor.setPower(0);
     }
 
     void updateMode() {
@@ -111,7 +117,7 @@ public class NewArm {
     }
     */
 
-    void gotoGrabLocation(boolean active) {
+    /**void gotoGrabLocation(boolean active) {
         if (active) {
             if (pitchLimit.getState()) {
                 pitchPower(0);
@@ -124,6 +130,22 @@ public class NewArm {
                 pitchPower(-0.5f);
             }
         }
+    }**/
+
+    void gotoGrabLocation(double power) {
+        goToAngle(10f, power);
+        pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        extendMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        while(pitchState() && opMode.opModeIsActive()) {
+            pitchMotor.setPower(power);
+        }
+        pitchMotor.setPower(0);
+
+        while(extendState() && opMode.opModeIsActive()) {
+            extendMotor.setPower(1);
+        }
+        extendMotor.setPower(0);
     }
 
 }

@@ -64,8 +64,8 @@ public class DarkCamera {
         circuitBreakers = new CircuitBreakersVuforia(vuforia);
     }
 
-    public CircuitBreakersVuforia.skystonePos circuitScan() {
-        return circuitBreakers.vuforiascan(false, false);
+    public CircuitBreakersVuforia.skystonePos circuitScan(boolean save) {
+        return circuitBreakers.vuforiascan(save, false);
     }
 
     public enum StoneLocation {

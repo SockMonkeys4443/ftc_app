@@ -35,7 +35,7 @@ public abstract class SuperDark extends LinearOpMode {
 
         drive.init(this);
         deadWheels.init(hardwareMap);
-        arm.init(hardwareMap);
+        arm.init(this);
         distance.init(hardwareMap);
 
 
