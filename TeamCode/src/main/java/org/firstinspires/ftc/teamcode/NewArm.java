@@ -17,6 +17,8 @@ public class NewArm {
     DigitalChannel pitchLimit;
     DigitalChannel extendLimit;
 
+    boolean pitchReset = false;
+
 
 
     void init(HardwareMap hardwareMap) {
@@ -94,7 +96,7 @@ public class NewArm {
     }
 
     int getPitchAngle() {
-        return ( pitchMotor.getCurrentPosition() / (9 * 1440) ) * 360;
+        return pitchMotor.getCurrentPosition() / 9 * 360;
     }
 
     boolean extendState() {
@@ -123,6 +125,17 @@ public class NewArm {
             } else {
                 pitchPower(-0.5f);
             }
+        }
+    }
+
+    void resetPitchEncoder() {
+        if (!pitchReset && pitchLimit.getState()) {
+            pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            pitchReset = true;
+        }
+
+        if (pitchReset && !pitchLimit.getState()) {
+            pitchReset = false;
         }
     }
 
