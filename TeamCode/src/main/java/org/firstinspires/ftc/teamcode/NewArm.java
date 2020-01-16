@@ -144,15 +144,16 @@ public class NewArm {
         pitchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         extendMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        while(extendState() && opMode.opModeIsActive()) {
+            extendMotor.setPower(1);
+        }
+        extendMotor.setPower(0);
+
         while(pitchState() && opMode.opModeIsActive()) {
             pitchMotor.setPower(power);
         }
         pitchMotor.setPower(0);
 
-        while(extendState() && opMode.opModeIsActive()) {
-            extendMotor.setPower(1);
-        }
-        extendMotor.setPower(0);
     }
 
     void resetPitchEncoder() {

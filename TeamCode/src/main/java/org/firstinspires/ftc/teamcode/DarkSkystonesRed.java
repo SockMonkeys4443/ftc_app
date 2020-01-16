@@ -30,16 +30,34 @@ public class DarkSkystonesRed extends SuperDark {
 
         //drive to scoop skystone
 
-        drive.driveDistance(DeadWheels.sideways, 15, 1, 2);
+        drive.driveDistance(DeadWheels.sideways, 15, 0.5, 3);
 
         arm.gotoGrabLocation(0.4);
 
         arm.setClaw(true); //opens claw
 
+        float distanceSkystone;
 
-        drive.driveDistance(DeadWheels.sideways, 20, 1, 2);
+        if(skystonePosition == CircuitBreakersVuforia.skystonePos.LEFT) {distanceSkystone = 20;}
+        else if (skystonePosition == CircuitBreakersVuforia.skystonePos.RIGHT) {distanceSkystone = -20;}
+        else {distanceSkystone = 0;}
+
+        //strafe to face skystone
+        drive.driveDistance(DeadWheels.forward, distanceSkystone-20, 0.35, 3);
+        //drive forwards to 'eat' skystone
+        drive.driveDistance(DeadWheels.sideways, 30, 0.5, 3);
 
         arm.setClaw(false);
+
+        sleep(2000);
+
+        //drives backwards after picking up the skystone
+        drive.driveDistance(DeadWheels.sideways, -30, 0.5, 3);
+
+        //drives to park, taking into account where we went to grab the skystone
+        drive.driveDistance(DeadWheels.forward, -100 -distanceSkystone , 0.5, 4);
+
+        stop();
 
     }
 }
