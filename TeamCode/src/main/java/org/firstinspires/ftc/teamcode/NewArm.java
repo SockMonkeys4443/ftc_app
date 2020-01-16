@@ -5,14 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.CRServo;
+
 
 
 public class NewArm {
     DcMotor pitchMotor = null;
     DcMotor extendMotor = null;
     Servo grabServo = null;
-    CRServo positionServo = null;
+    Servo positionServo = null;
 
     DigitalChannel pitchLimit;
     DigitalChannel extendLimit;
@@ -32,7 +32,7 @@ public class NewArm {
         extendMotor = hardwareMap.get(DcMotor.class, "extendMotor");
             //if(extendMotor==null) {extendMotor = hardwareMap.get(DcMotor.class, "clawMotor");}
         grabServo = hardwareMap.get(Servo.class, "grabServo");
-        positionServo = hardwareMap.get(CRServo.class, "positionServo");
+        positionServo = hardwareMap.get(Servo.class, "positionServo");
         //pitchMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         pitchMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -77,7 +77,9 @@ public class NewArm {
         pitchMotor.setPower(0);
     }
 
-    void positionServoPower(float power) { positionServo.setPower(power);}
+    void updatePositionServo() {
+
+    }
 
     int getPitchPosition() {
         return pitchMotor.getCurrentPosition();

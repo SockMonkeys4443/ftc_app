@@ -90,11 +90,11 @@ public class DarkTeleOp extends SuperDark {
         }
 
         if (gamepad2.dpad_up) {
-            arm.positionServoPower(-0.08f);
+            arm.positionServo.setPosition(arm.positionServo.getPosition() - 1);
         } else if (gamepad2.dpad_down) {
-            arm.positionServoPower(0.08f);
+            arm.positionServo.setPosition(arm.positionServo.getPosition() + 1);
         } else {
-            arm.positionServoPower(gamepad2.right_stick_y * armSpeed / 50);
+            //update servo position
         }
 
         //claw
@@ -128,6 +128,7 @@ public class DarkTeleOp extends SuperDark {
         //imuController.updatePosition();
 
         arm.updateMode();
+        arm.resetPitchEncoder();
 
     }
 
