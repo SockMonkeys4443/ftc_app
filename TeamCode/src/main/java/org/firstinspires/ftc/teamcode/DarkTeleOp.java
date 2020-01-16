@@ -112,6 +112,9 @@ public class DarkTeleOp extends SuperDark {
         telemetry.addData("driveMode", driveMode);
         telemetry.addData("Drive Power", drivePower);
         telemetry.addData("arm angle:", arm.getPitchAngle() + " arm position:" + arm.getPitchPosition());
+        telemetry.addData("Pitch Switch:", arm.pitchState());
+        telemetry.addData("Pitch Switch:", arm.extendState());
+
         telemetry.update();
 
 
