@@ -18,6 +18,7 @@ public class DarkTeleOp extends SuperDark {
     double drivePower;
     float armSpeed = 1f;
     boolean clawClosed = false;
+    boolean armReseting = false;
 
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
@@ -75,15 +76,14 @@ public class DarkTeleOp extends SuperDark {
             arm.goToAngle(45, 1);
         }
 
+        if (a2Pressed()) {
+            toggleArmReseting();
+        }
+
         //arm power
         //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
-        if (a2Pressed()) {
-            if (!arm.extendState()) {
-                arm.extendPower(-gamepad2.left_stick_y * armSpeed);
-            }
-            if (!arm.pitchState()) {
-                arm.pitchPower(gamepad2.right_stick_y * armSpeed);
-            }
+        if (armReseting) {
+            arm.gotoGrabLocation(0.7);
         } else {
             arm.extendPower(-gamepad2.left_stick_y * armSpeed);
             arm.pitchPower(gamepad2.right_stick_y * armSpeed);
@@ -243,6 +243,14 @@ public class DarkTeleOp extends SuperDark {
                 foundServo.setPosition(0.17); //~30 degrees from the 0 point - that being the top
             } else {
                 foundServo.setPosition(1);
+            }
+        }
+
+        void toggleArmReseting() {
+            if (!armReseting) {
+                armReseting = true;
+            } else {
+                armReseting = false;
             }
         }
 
