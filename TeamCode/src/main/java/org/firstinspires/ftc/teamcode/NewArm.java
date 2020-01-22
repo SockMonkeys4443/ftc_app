@@ -150,7 +150,7 @@ public class NewArm {
         pitchMotor.setPower(0);
 
         while(extendState() && opMode.opModeIsActive()) {
-            extendMotor.setPower(-1);
+            extendMotor.setPower(1);
         }
         extendMotor.setPower(0);
 
