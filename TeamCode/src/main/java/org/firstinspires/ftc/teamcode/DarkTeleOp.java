@@ -303,11 +303,13 @@ public class DarkTeleOp extends SuperDark {
                 arm.pitchPower(0);
             }
 
-            if(!extendReset && arm.extendState()) {
-                arm.extendPower(-power);
-            } else if (!arm.extendState()) {
-                extendReset = true;
-                arm.extendPower(0);
+            if (pitchReset) {
+                if (!extendReset && arm.extendState()) {
+                    arm.extendPower(-power);
+                } else if (!arm.extendState()) {
+                    extendReset = true;
+                    arm.extendPower(0);
+                }
             }
         }
 
