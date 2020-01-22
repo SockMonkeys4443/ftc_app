@@ -90,8 +90,8 @@ public class DarkTeleOp extends SuperDark {
         } else {
             arm.extendPower(-gamepad2.left_stick_y * armSpeed);
             arm.pitchPower(gamepad2.right_stick_y * armSpeed);
-            pitchReset = true;
-            extendReset = true;
+            pitchReset = false;
+            extendReset = false;
         }
 
         if (armReseting && !arm.pitchState() && !arm.extendState()) {
