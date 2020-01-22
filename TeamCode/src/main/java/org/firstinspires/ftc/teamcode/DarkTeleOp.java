@@ -73,7 +73,7 @@ public class DarkTeleOp extends SuperDark {
             toggleArmSpeed();
         }
         if (x2Pressed()) {
-            arm.goToAngle(45, 1);
+            arm.resetPitchEncoder();
         }
 
         if (a2Pressed()) {
@@ -83,10 +83,14 @@ public class DarkTeleOp extends SuperDark {
         //arm power
         //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
         if (armReseting) {
-            arm.gotoGrabLocation(0.7);
+            arm.gotoGrabLocation(0.5);
         } else {
             arm.extendPower(-gamepad2.left_stick_y * armSpeed);
             arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+        }
+
+        if (armReseting && !arm.pitchState() && !arm.extendState()) {
+            armReseting = false;
         }
 
         if (gamepad2.dpad_up) {
@@ -131,7 +135,7 @@ public class DarkTeleOp extends SuperDark {
         //imuController.updatePosition();
 
         arm.updateMode();
-        arm.resetPitchEncoder();
+        //arm.resetPitchEncoder();
 
     }
 
