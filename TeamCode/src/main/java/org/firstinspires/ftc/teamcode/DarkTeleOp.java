@@ -20,6 +20,9 @@ public class DarkTeleOp extends SuperDark {
     boolean clawClosed = false;
     boolean armReseting = false;
 
+    boolean pitchReset = false;
+    boolean extendReset = false;
+
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
     enum RobotFront {ARM, GRABBER, BACKARM, PHONE}
@@ -83,10 +86,12 @@ public class DarkTeleOp extends SuperDark {
         //arm power
         //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
         if (armReseting) {
-            arm.gotoGrabLocation(0.5);
+            gotoGrabLocation(0.5f);
         } else {
             arm.extendPower(-gamepad2.left_stick_y * armSpeed);
             arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+            pitchReset = true;
+            extendReset = true;
         }
 
         if (armReseting && !arm.pitchState() && !arm.extendState()) {
@@ -287,6 +292,22 @@ public class DarkTeleOp extends SuperDark {
                 armSpeed = 1f;
             } else {
                 armSpeed = 0.4f;
+            }
+        }
+
+        void gotoGrabLocation(float power) {
+            if(!pitchReset && arm.pitchState()) {
+                arm.pitchPower(power);
+            } else if (!arm.pitchState()) {
+                pitchReset = true;
+                arm.pitchPower(0);
+            }
+
+            if(!extendReset && arm.extendState()) {
+                arm.extendPower(-power);
+            } else if (!arm.extendState()) {
+                extendReset = true;
+                arm.extendPower(0);
             }
         }
 

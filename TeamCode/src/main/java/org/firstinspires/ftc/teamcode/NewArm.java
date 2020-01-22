@@ -156,6 +156,7 @@ public class NewArm {
 
     }
 
+
     void resetPitchEncoder() {
         if (pitchMotor.getMode() == DcMotor.RunMode.RUN_WITHOUT_ENCODER) {
             pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
