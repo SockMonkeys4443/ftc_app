@@ -152,6 +152,13 @@ public class NewArm {
         while(extendState() && opMode.opModeIsActive()) {
             extendMotor.setPower(1);
         }
+        //extend further
+        opMode.sleep(750);
+
+        while(extendState() && opMode.opModeIsActive()) {
+            extendMotor.setPower(-1);
+        }
+
         extendMotor.setPower(0);
 
     }

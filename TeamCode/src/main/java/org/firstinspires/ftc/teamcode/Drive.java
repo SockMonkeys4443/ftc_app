@@ -251,6 +251,10 @@ public class Drive {
      */
     void driveDistance(boolean axis, float distanceCM, double basePower, float timeoutSeconds) {
 
+        if(distanceCM == 0) {
+            return;
+        }
+
         Timer driveTimer = new Timer(opMode.runtime);
 
 

@@ -112,15 +112,16 @@ public class CircuitBreakersVuforia {
             int cropWidth;
             int cropHeight;
 
+            //modified for 4443 camera
             if (red) {
                 cropStartX = (int) ((120.0 / 720.0) * bitmap.getWidth());
                 cropStartY = (int) ((100.0 / 480.0) * bitmap.getHeight());
                 cropWidth = (int) ((590.0 / 720.0) * bitmap.getWidth());
                 cropHeight = (int) ((170.0 / 480.0) * bitmap.getHeight());
             } else {
-                cropStartX = (int) ((370.0 / 1280.0) * bitmap.getWidth());
+                cropStartX = (int) ((270.0 / 1280.0) * bitmap.getWidth());
                 cropStartY = (int) ((130.0 / 720.0) * bitmap.getHeight());
-                cropWidth = (int) ((890.0 / 1280.0) * bitmap.getWidth());
+                cropWidth = (int) ((790.0 / 1280.0) * bitmap.getWidth());
                 cropHeight = (int) ((165.0 / 720.0) * bitmap.getHeight());
             }
 

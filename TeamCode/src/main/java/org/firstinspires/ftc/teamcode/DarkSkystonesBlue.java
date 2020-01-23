@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name="Skystones Red", group="test")
-public class DarkSkystonesRed extends SuperDark {
+@Autonomous(name="Skystones Blue", group="test")
+public class DarkSkystonesBlue extends SuperDark {
     @Override
     public void darkInit() {
         initCamera();
@@ -30,11 +30,10 @@ public class DarkSkystonesRed extends SuperDark {
 
         //drive to scoop skystone
 
-        drive.driveDistance(DeadWheels.sideways, 15, 0.5, 3);
+        drive.driveDistance(DeadWheels.sideways, 30, 0.5, 3);
 
         arm.gotoGrabLocation(0.4);
 
-        arm.setClaw(true); //opens claw
 
         float distanceSkystone;
 
@@ -42,12 +41,16 @@ public class DarkSkystonesRed extends SuperDark {
         else if (skystonePosition == CircuitBreakersVuforia.skystonePos.RIGHT) {distanceSkystone = -20;}
         else {distanceSkystone = 0;}
 
+
         //strafe to face skystone
         drive.driveDistance(DeadWheels.forward, distanceSkystone-20, 0.35, 3);
-        //drive forwards to 'eat' skystone
-        drive.driveDistance(DeadWheels.sideways, 60, 0.5, 3);
 
-        arm.setClaw(false);
+        arm.setClaw(false); //opens claw
+
+        //drive forwards to 'eat' skystone
+        drive.driveDistance(DeadWheels.sideways, 45, 0.5, 3);
+
+        arm.setClaw(true);
 
         sleep(2000);
 
@@ -55,7 +58,11 @@ public class DarkSkystonesRed extends SuperDark {
         drive.driveDistance(DeadWheels.sideways, -60, 0.5, 3);
 
         //drives to park, taking into account where we went to grab the skystone
-        drive.driveDistance(DeadWheels.forward, 100 -distanceSkystone , 0.5, 4);
+        drive.driveDistance(DeadWheels.forward, 120 -distanceSkystone , 0.5, 4);
+
+        arm.setClaw(false); //opens claw
+
+        drive.driveDistance(DeadWheels.forward, -20, 0.5, 2);
 
         stop();
 
