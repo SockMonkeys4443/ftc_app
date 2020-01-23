@@ -17,8 +17,14 @@ public class DarkTeleOp extends SuperDark {
 
     double drivePower;
     float armSpeed = 1f;
+
     boolean clawClosed = false;
     boolean armReseting = false;
+    boolean pitchReset = false;
+    boolean extendReset = false;
+
+    GamepadButton game1 = new GamepadButton(gamepad1);
+    GamepadButton game2 = new GamepadButton(gamepad2);
 
     enum PositionMode {NORMAL, TESTONE, TESTTWO}
 
@@ -54,11 +60,11 @@ public class DarkTeleOp extends SuperDark {
 
         //buttons
 
-        if (yPressed()) {
+        if (game1.yPressed()) {
             toggleFront();
         }
 
-        if (bPressed()) {
+        if (game1.bPressed()) {
             toggleServo();
         }
 
@@ -66,27 +72,29 @@ public class DarkTeleOp extends SuperDark {
         if (xPressed()) {
             togglePosition();
         } */
-        if (aPressed()) {
+        if (game1.aPressed()) {
             toggleSpeed();
         }
-        if (y2Pressed()) {
+        if (game2.yPressed()) {
             toggleArmSpeed();
         }
-        if (x2Pressed()) {
+        if (game2.xPressed()) {
             arm.resetPitchEncoder();
         }
 
-        if (a2Pressed()) {
+        if (game2.aPressed()) {
             toggleArmReseting();
         }
 
         //arm power
         //oldArm.armPower(gamepad2.right_stick_y * armSpeed);
         if (armReseting) {
-            arm.gotoGrabLocation(0.5);
+            gotoGrabLocation(0.5f);
         } else {
             arm.extendPower(-gamepad2.left_stick_y * armSpeed);
             arm.pitchPower(gamepad2.right_stick_y * armSpeed);
+            pitchReset = false;
+            extendReset = false;
         }
 
         if (armReseting && !arm.pitchState() && !arm.extendState()) {
@@ -140,88 +148,9 @@ public class DarkTeleOp extends SuperDark {
     }
 
 
-
-    //button control
-    boolean aWasPressed;
-    boolean bWasPressed;
-    boolean xWasPressed;
-    boolean yWasPressed;
-    boolean y2WasPressed;
-    boolean x2WasPressed;
-    boolean a2WasPressed;
-
-    boolean aPressed() {
-        if (!aWasPressed && gamepad1.a) {
-            aWasPressed = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    boolean bPressed() {
-        if (!bWasPressed && gamepad1.b) {
-            bWasPressed = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    boolean xPressed() {
-        if (!xWasPressed && gamepad1.x) {
-            xWasPressed = true;
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    boolean yPressed() {
-        if (!yWasPressed && gamepad1.y) {
-            yWasPressed = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    boolean y2Pressed() {
-        if (!y2WasPressed && gamepad2.y) {
-            y2WasPressed = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    boolean x2Pressed() {
-        if (!x2WasPressed && gamepad2.x) {
-            x2WasPressed = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    boolean a2Pressed() {
-        if (!a2WasPressed && gamepad2.a) {
-            a2WasPressed = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     void buttonUpdate() {
-        if(aWasPressed&&!gamepad1.a){aWasPressed=false;}
-        if(bWasPressed&&!gamepad1.b){bWasPressed=false;}
-        if(xWasPressed&&!gamepad1.x){xWasPressed=false;}
-        if(yWasPressed&&!gamepad1.y){yWasPressed=false;}
-        if(y2WasPressed&&!gamepad2.y){y2WasPressed=false;}
-        if(x2WasPressed&&!gamepad2.x){x2WasPressed=false;}
-        if(a2WasPressed&&!gamepad2.a){a2WasPressed=false;}
+        game1.updateButtons();
+        game2.updateButtons();
     }
 
 
@@ -287,6 +216,24 @@ public class DarkTeleOp extends SuperDark {
                 armSpeed = 1f;
             } else {
                 armSpeed = 0.4f;
+            }
+        }
+
+        void gotoGrabLocation(float power) {
+            if(!pitchReset && arm.pitchState()) {
+                arm.pitchPower(power);
+            } else if (!arm.pitchState()) {
+                pitchReset = true;
+                arm.pitchPower(0);
+            }
+
+            if (pitchReset) {
+                if (!extendReset && arm.extendState()) {
+                    arm.extendPower(-power);
+                } else if (!arm.extendState()) {
+                    extendReset = true;
+                    arm.extendPower(0);
+                }
             }
         }
 
