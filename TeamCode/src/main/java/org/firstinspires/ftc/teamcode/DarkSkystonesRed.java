@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name="Skystones Blue", group="test")
-public class DarkSkystonesBlue extends SuperDark {
+@Autonomous(name="Skystones Red", group="test") //TODO: make not test anymore lol
+public class DarkSkystonesRed extends SuperDark {
     @Override
     public void darkInit() {
         initCamera();
@@ -58,11 +58,11 @@ public class DarkSkystonesBlue extends SuperDark {
         drive.driveDistance(DeadWheels.sideways, -60, 0.5, 3);
 
         //drives to park, taking into account where we went to grab the skystone
-        drive.driveDistance(DeadWheels.forward, 120 -distanceSkystone , 0.5, 4);
+        drive.driveDistance(DeadWheels.forward, -120 -distanceSkystone , 0.5, 4);
 
         arm.setClaw(false); //opens claw
 
-        drive.driveDistance(DeadWheels.forward, -50, 0.5, 2);
+        drive.driveDistance(DeadWheels.forward, 50, 0.5, 2);
 
         stop();
 
